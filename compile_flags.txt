@@ -1,0 +1,4 @@
+-Wall
+-xc++
+--std=c++11
+-F/Library/Frameworks 
