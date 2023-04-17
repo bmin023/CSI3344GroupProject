@@ -17,7 +17,7 @@ int main(){
     input >> r;
     input >> c;
     cout << "r: " << r << " c: " << c << endl;*/
-    picture duckPhoto = picture("pixelduck.txt");
+    Picture duckPhoto = Picture("pixelduck.txt");
     SDL_Plotter window (duckPhoto.height, duckPhoto.width, true);
 
     while(!window.getQuit()){
