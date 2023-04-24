@@ -19,12 +19,14 @@ int main(){
     input >> c;
     cout << "r: " << r << " c: " << c << endl;*/
     Picture duckPhoto = Picture("pixelduck.txt");
+    Picture mask = Picture("biggump.png.txt");
     SDL_Plotter window (1000, 1000, true);
 
     while(!window.getQuit()){
         if(window.mouseClick()){
             Vec2 pos = Vec2(0,0);
-            Drawer::drawPicture(duckPhoto, window, pos, Orientation::FLIPPED);
+            Drawer::drawMask(duckPhoto, mask, Vec2(0,0), window, pos, Orientation::RIGHT);
+            // Drawer::drawPicture(mask, window, pos);
             window.update();
         }
     }

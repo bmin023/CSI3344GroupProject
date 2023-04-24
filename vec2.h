@@ -7,7 +7,7 @@ struct iVec2 {
 
 struct Vec2 {
   float x, y;
-  iVec2 to_ivec2() {
+  iVec2 toIVec2() {
     return {static_cast<int>(x), static_cast<int>(y)};
   }
   Vec2(float x, float y) : x(x), y(y) {}

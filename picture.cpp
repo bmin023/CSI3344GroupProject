@@ -1,5 +1,7 @@
 #include "picture.h"
 #include "SDL_Plotter.h"
+#include "vec2.h"
+#include <cassert>
 
 Picture::Picture(string filename) {
     ifstream input;
@@ -42,6 +44,8 @@ Picture::~Picture() {
     delete[] picData;
 }
 
+color Picture::getPixel(int x, int y) { return picData[x][y]; }
+
 Vec2 Picture::dim() { return Vec2(width, height); }
 
 void Drawer::drawPicture(Picture &pic, SDL_Plotter &g, Vec2 pos,
@@ -58,6 +62,26 @@ void Drawer::drawPicture(Picture &pic, SDL_Plotter &g, Vec2 pos,
         break;
     case LEFT:
         Drawer::leftOrientationDraw(pic, g, pos);
+        break;
+    }
+}
+
+void Drawer::drawMask(Picture &pic, Picture &mask, Vec2 maskStart,
+                      SDL_Plotter &g, Vec2 pos, Orientation orient) {
+    assert(maskStart.x + mask.width <= pic.width);
+    assert(maskStart.y + mask.height <= pic.height);
+    switch (orient) {
+    case NORMAL:
+        Drawer::topOrientationMask(pic, mask, maskStart, g, pos, orient);
+        break;
+    case RIGHT:
+        Drawer::rightOrientationMask(pic, mask, maskStart, g, pos, orient);
+        break;
+    case FLIPPED:
+        Drawer::flippedOrientationMask(pic, mask, maskStart, g, pos, orient);
+        break;
+    case LEFT:
+        Drawer::leftOrientationMask(pic, mask, maskStart, g, pos, orient);
         break;
     }
 }
@@ -95,6 +119,62 @@ void Drawer::leftOrientationDraw(Picture &pic, SDL_Plotter &g, Vec2 pos) {
         for (int j = 0; j < pic.width; j++) {
             color pixel = pic.picData[i][j];
             g.plotPixel(pos.x + i, pos.y + j, pixel.R, pixel.G, pixel.B);
+        }
+    }
+}
+void Drawer::topOrientationMask(Picture &pic, Picture &mask, Vec2 maskStart,
+                                SDL_Plotter &g, Vec2 pos, Orientation orient) {
+    iVec2 start = maskStart.toIVec2();
+    for (int i = 0; i < mask.height; i++) {
+        for (int j = 0; j < mask.width; j++) {
+            color pixel = pic.picData[i + start.x][j + start.y];
+            color maskPixel = mask.getPixel(i, j);
+            if (maskPixel.R != 0 && maskPixel.G != 0 && maskPixel.B != 0) {
+                g.plotPixel(pos.x + j, pos.y + i, pixel.R, pixel.G, pixel.B);
+            }
+        }
+    }
+}
+void Drawer::rightOrientationMask(Picture &pic, Picture &mask, Vec2 maskStart,
+                                  SDL_Plotter &g, Vec2 pos,
+                                  Orientation orient) {
+    iVec2 start = maskStart.toIVec2();
+    pos += mask.dim().flip();
+    for (int i = 0; i < mask.height; i++) {
+        for (int j = 0; j < mask.width; j++) {
+            color pixel = pic.picData[i + start.x][j + start.y];
+            color maskPixel = mask.getPixel(i, j);
+            if (maskPixel.R != 0 && maskPixel.G != 0 && maskPixel.B != 0) {
+                g.plotPixel(pos.x - i, pos.y - j, pixel.R, pixel.G, pixel.B);
+            }
+        }
+    }
+}
+void Drawer::flippedOrientationMask(Picture &pic, Picture &mask, Vec2 maskStart,
+                                    SDL_Plotter &g, Vec2 pos,
+                                    Orientation orient) {
+    iVec2 start = maskStart.toIVec2();
+    pos += mask.dim();
+    for (int i = 0; i < mask.height; i++) {
+        for (int j = 0; j < mask.width; j++) {
+            color pixel = pic.picData[i + start.x][j + start.y];
+            color maskPixel = mask.getPixel(i, j);
+            if (maskPixel.R != 0 && maskPixel.G != 0 && maskPixel.B != 0) {
+                g.plotPixel(pos.x - j, pos.y - i, pixel.R, pixel.G, pixel.B);
+            }
+        }
+    }
+}
+void Drawer::leftOrientationMask(Picture &pic, Picture &mask, Vec2 maskStart,
+                                 SDL_Plotter &g, Vec2 pos, Orientation orient) {
+    iVec2 start = maskStart.toIVec2();
+    for (int i = 0; i < mask.height; i++) {
+        for (int j = 0; j < mask.width; j++) {
+            color pixel = pic.picData[i + start.x][j + start.y];
+            color maskPixel = mask.getPixel(i, j);
+            if (maskPixel.R != 0 && maskPixel.G != 0 && maskPixel.B != 0) {
+                g.plotPixel(pos.x + i, pos.y + j, pixel.R, pixel.G, pixel.B);
+            }
         }
     }
 }
