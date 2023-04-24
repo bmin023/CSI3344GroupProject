@@ -3,6 +3,7 @@
 #include <fstream>
 #include "SDL_Plotter.h"
 #include "picture.h"
+#include "vec2.h"
 
 using namespace std;
 
@@ -18,15 +19,12 @@ int main(){
     input >> c;
     cout << "r: " << r << " c: " << c << endl;*/
     Picture duckPhoto = Picture("pixelduck.txt");
-    SDL_Plotter window (duckPhoto.height, duckPhoto.width, true);
+    SDL_Plotter window (1000, 1000, true);
 
     while(!window.getQuit()){
         if(window.mouseClick()){
-            for(int i = 0; i < duckPhoto.height; i++){
-                for(int j = 0; j < duckPhoto.width; j++){
-                    window.plotPixel(j, i, duckPhoto.picData[i][j]);
-                }
-            }
+            Vec2 pos = Vec2(0,0);
+            Drawer::drawPicture(duckPhoto, window, pos, Orientation::FLIPPED);
             window.update();
         }
     }
