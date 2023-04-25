@@ -52,4 +52,10 @@ struct Vec2 {
   }
 };
 
+const Vec2 L = Vec2(-1,0);
+const Vec2 R = Vec2(1, 0);
+const Vec2 UP = Vec2(0, 1);
+const Vec2 DOWN = Vec2(0,-1);
+const Vec2 UNIT = Vec2(1,1);
+
 #endif // vec2.h

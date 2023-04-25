@@ -57,9 +57,10 @@ Piece::Piece(Picture &image, Vec2 imagePos, Vec2 pos) : image(image), imagePos(i
 void Piece::draw(Drawer &drawer) {
     Vec2 pictureDim = Vec2(128,128);
     Vec2 edgedim = Vec2(128,32);
+    Vec2 unitVec = Vec2(1,1);
     drawer.drawMask(image, topEdge, imagePos,pos);
     drawer.drawMask(image, bottomEdge, imagePos + pictureDim.ycomp() - edgedim.ycomp(),pos + pictureDim.ycomp() - edgedim.ycomp(), Orientation::FLIPPED);
     drawer.drawMask(image, lEdge, imagePos,pos, Orientation::LEFT);
     drawer.drawMask(image, rEdge, imagePos + edgedim.xcomp() - edgedim.ycomp().flip(),pos + edgedim.xcomp() - edgedim.ycomp().flip(), Orientation::RIGHT);
-    drawer.drawPart(image, imagePos + edgedim.splaty(), pictureDim - edgedim.splaty()* 2, pos + edgedim.splaty(), Orientation::NORMAL);
+    drawer.drawPart(image, imagePos + edgedim.splaty(), pictureDim - edgedim.splaty()* 2 + UNIT, pos + edgedim.splaty(), Orientation::NORMAL);
 }
