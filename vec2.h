@@ -36,6 +36,10 @@ struct Vec2 {
     return *this;
   }
   Vec2 flip() { return Vec2(y, x); }
+  Vec2 ycomp() { return Vec2(0, y); }
+  Vec2 xcomp() { return Vec2(x, 0); }
+  Vec2 splatx() { return Vec2(x, x); }
+  Vec2 splaty() { return Vec2(y, y); }
 };
 
 #endif // vec2.h

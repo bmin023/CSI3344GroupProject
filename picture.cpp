@@ -36,7 +36,8 @@ Picture::Picture(string filename) {
     }
 }
 
-Picture::~Picture() {
+void Picture::dealloc() {
+    cout << "picture delete" << endl;
     for (int i = 0; i < height; i++) {
         delete[] picData[i];
     }
@@ -48,82 +49,106 @@ color Picture::getPixel(int x, int y) { return picData[x][y]; }
 
 Vec2 Picture::dim() { return Vec2(width, height); }
 
-void Drawer::drawPicture(Picture &pic, SDL_Plotter &g, Vec2 pos,
-                         Orientation orient) {
+void Drawer::drawPicture(Picture &pic, Vec2 pos, Orientation orient) {
     switch (orient) {
     case NORMAL:
-        Drawer::topOrientationDraw(pic, g, pos);
+        topOrientationDraw(pic, Vec2(0, 0), pic.dim(), pos, orient);
         break;
     case RIGHT:
-        Drawer::rightOrientationDraw(pic, g, pos);
+        rightOrientationDraw(pic, Vec2(0, 0), pic.dim(), pos, orient);
         break;
     case FLIPPED:
-        Drawer::flippedOrientationDraw(pic, g, pos);
+        flippedOrientationDraw(pic, Vec2(0, 0), pic.dim(), pos, orient);
         break;
     case LEFT:
-        Drawer::leftOrientationDraw(pic, g, pos);
+        leftOrientationDraw(pic, Vec2(0, 0), pic.dim(), pos, orient);
         break;
     }
 }
 
-void Drawer::drawMask(Picture &pic, Picture &mask, Vec2 maskStart,
-                      SDL_Plotter &g, Vec2 pos, Orientation orient) {
+void Drawer::drawPart(Picture &pic, Vec2 start, Vec2 dim, Vec2 pos,
+              Orientation orient) {
+    switch(orient) {
+        case NORMAL:
+            topOrientationDraw(pic, start, dim, pos, orient);
+            break;
+        case RIGHT:
+            rightOrientationDraw(pic, start, dim, pos, orient);
+            break;
+        case FLIPPED:
+            flippedOrientationDraw(pic, start, dim, pos, orient);
+            break;
+        case LEFT:
+            leftOrientationDraw(pic, start, dim, pos, orient);
+            break;
+    }
+}
+void Drawer::drawMask(Picture &pic, Picture &mask, Vec2 maskStart, Vec2 pos,
+                      Orientation orient) {
     assert(maskStart.x + mask.width <= pic.width);
     assert(maskStart.y + mask.height <= pic.height);
     switch (orient) {
     case NORMAL:
-        Drawer::topOrientationMask(pic, mask, maskStart, g, pos, orient);
+        topOrientationMask(pic, mask, maskStart, pos, orient);
         break;
     case RIGHT:
-        Drawer::rightOrientationMask(pic, mask, maskStart, g, pos, orient);
+        rightOrientationMask(pic, mask, maskStart, pos, orient);
         break;
     case FLIPPED:
-        Drawer::flippedOrientationMask(pic, mask, maskStart, g, pos, orient);
+        flippedOrientationMask(pic, mask, maskStart, pos, orient);
         break;
     case LEFT:
-        Drawer::leftOrientationMask(pic, mask, maskStart, g, pos, orient);
+        leftOrientationMask(pic, mask, maskStart, pos, orient);
         break;
     }
 }
 
-void Drawer::topOrientationDraw(Picture &pic, SDL_Plotter &g, Vec2 pos) {
-    for (int i = 0; i < pic.height; i++) {
-        for (int j = 0; j < pic.width; j++) {
-            color pixel = pic.picData[i][j];
+void Drawer::topOrientationDraw(Picture &pic, Vec2 start, Vec2 dim, Vec2 pos,
+                                Orientation orient) {
+    iVec2 iStart = start.toIVec2();
+    for (int i = 0; i < dim.x; i++) {
+        for (int j = 0; j < dim.y; j++) {
+            color pixel = pic.picData[iStart.x + i][iStart.y + j];
             g.plotPixel(pos.x + j, pos.y + i, pixel.R, pixel.G, pixel.B);
         }
     }
 }
 
-void Drawer::rightOrientationDraw(Picture &pic, SDL_Plotter &g, Vec2 pos) {
+void Drawer::rightOrientationDraw(Picture &pic, Vec2 start, Vec2 dim, Vec2 pos,
+                                  Orientation orient) {
+    iVec2 iStart = start.toIVec2();
     pos += pic.dim().flip();
-    for (int i = 0; i < pic.height; i++) {
-        for (int j = 0; j < pic.width; j++) {
-            color pixel = pic.picData[i][j];
+    for (int i = 0; i < dim.x; i++) {
+        for (int j = 0; j < dim.y; j++) {
+            color pixel = pic.picData[iStart.x + i][iStart.y + j];
             g.plotPixel(pos.x - i, pos.y - j, pixel.R, pixel.G, pixel.B);
         }
     }
 }
 
-void Drawer::flippedOrientationDraw(Picture &pic, SDL_Plotter &g, Vec2 pos) {
+void Drawer::flippedOrientationDraw(Picture &pic, Vec2 start, Vec2 dim,
+                                    Vec2 pos, Orientation orient) {
+    iVec2 iStart = start.toIVec2();
     pos += pic.dim();
-    for (int i = 0; i < pic.height; i++) {
-        for (int j = 0; j < pic.width; j++) {
-            color pixel = pic.picData[i][j];
+    for (int i = 0; i < dim.x; i++) {
+        for (int j = 0; j < dim.y; j++) {
+            color pixel = pic.picData[iStart.x + i][iStart.y + j];
             g.plotPixel(pos.x - j, pos.y - i, pixel.R, pixel.G, pixel.B);
         }
     }
 }
-void Drawer::leftOrientationDraw(Picture &pic, SDL_Plotter &g, Vec2 pos) {
-    for (int i = 0; i < pic.height; i++) {
-        for (int j = 0; j < pic.width; j++) {
-            color pixel = pic.picData[i][j];
+void Drawer::leftOrientationDraw(Picture &pic, Vec2 start, Vec2 dim, Vec2 pos,
+                                 Orientation orient) {
+    iVec2 iStart = start.toIVec2();
+    for (int i = 0; i < dim.x; i++) {
+        for (int j = 0; j < dim.y; j++) {
+            color pixel = pic.picData[iStart.x + i][iStart.y + j];
             g.plotPixel(pos.x + i, pos.y + j, pixel.R, pixel.G, pixel.B);
         }
     }
 }
 void Drawer::topOrientationMask(Picture &pic, Picture &mask, Vec2 maskStart,
-                                SDL_Plotter &g, Vec2 pos, Orientation orient) {
+                                Vec2 pos, Orientation orient) {
     iVec2 start = maskStart.toIVec2();
     for (int i = 0; i < mask.height; i++) {
         for (int j = 0; j < mask.width; j++) {
@@ -136,8 +161,7 @@ void Drawer::topOrientationMask(Picture &pic, Picture &mask, Vec2 maskStart,
     }
 }
 void Drawer::rightOrientationMask(Picture &pic, Picture &mask, Vec2 maskStart,
-                                  SDL_Plotter &g, Vec2 pos,
-                                  Orientation orient) {
+                                  Vec2 pos, Orientation orient) {
     iVec2 start = maskStart.toIVec2();
     pos += mask.dim().flip();
     for (int i = 0; i < mask.height; i++) {
@@ -151,8 +175,7 @@ void Drawer::rightOrientationMask(Picture &pic, Picture &mask, Vec2 maskStart,
     }
 }
 void Drawer::flippedOrientationMask(Picture &pic, Picture &mask, Vec2 maskStart,
-                                    SDL_Plotter &g, Vec2 pos,
-                                    Orientation orient) {
+                                    Vec2 pos, Orientation orient) {
     iVec2 start = maskStart.toIVec2();
     pos += mask.dim();
     for (int i = 0; i < mask.height; i++) {
@@ -166,7 +189,7 @@ void Drawer::flippedOrientationMask(Picture &pic, Picture &mask, Vec2 maskStart,
     }
 }
 void Drawer::leftOrientationMask(Picture &pic, Picture &mask, Vec2 maskStart,
-                                 SDL_Plotter &g, Vec2 pos, Orientation orient) {
+                                 Vec2 pos, Orientation orient) {
     iVec2 start = maskStart.toIVec2();
     for (int i = 0; i < mask.height; i++) {
         for (int j = 0; j < mask.width; j++) {
