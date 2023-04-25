@@ -22,16 +22,28 @@ color Edge::getPixel(int x, int y) {
             col = color(255, 255, 255);
         }
     } else {
-        if (x + y < height - 1) {
-            col = color(0, 0, 0);
+        int abs = (x - height/2);
+        if (abs < 0) {
+            abs = -abs;
+        }
+        if (y < abs + height/2) {
+            return color(255,0,0);
+        }
+        if (y > -abs + width - height/2) {
+            col = color(0,255,0);
             return col;
         }
-        if (x - y >= width - height || x + y >= width) {
-            col = color(0, 0, 0);
-            return col;
-        }
+        // if(y < 31) {
+        //     col = color(0,0,0);
+        //     return col;
+        // }
+        // if(y > 96) {
+        //     col = color(0,0,0);
+        //     return col;
+        // }
         if (inverted) {
             x = height - x - 1;
+            y = width - y - 1;
         }
         col = picData[x][y];
     }

@@ -27,16 +27,18 @@ int main(){
     cout << "drawer created" << endl;
     Piece duck = Piece(duckPhoto, Vec2(0,0), Vec2(0,0));
     cout << "duck created" << endl;
-    Edge topEdge = Edge(mask,true);
-    duck.setEdge(NORMAL, topEdge);
-    duck.setEdge(RIGHT, topEdge);
-    duck.setEdge(FLIPPED, topEdge);
-    duck.setEdge(LEFT, topEdge);
+    Edge invedge = Edge(mask,true);
+    Edge edge = Edge(mask,false);
+    duck.setEdge(NORMAL, invedge);
+    duck.setEdge(RIGHT, edge);
+    duck.setEdge(FLIPPED, edge);
+    duck.setEdge(LEFT, invedge);
     cout << "edges set" << endl;
 
     while(!window.getQuit()){
         if(window.mouseClick()){
             duck.draw(drawer);
+            // drawer.drawPicture(topEdge, Vec2(0,0));
             window.update();
         }
     }
