@@ -108,7 +108,7 @@ void Drawer::topOrientationDraw(Picture &pic, Vec2 start, Vec2 dim, Vec2 pos,
     iVec2 iStart = start.toIVec2();
     for (int i = 0; i < dim.x; i++) {
         for (int j = 0; j < dim.y; j++) {
-            color pixel = pic.picData[iStart.x + i][iStart.y + j];
+            color pixel = pic.getPixel(iStart.x + i,iStart.y + j);
             g.plotPixel(pos.x + j, pos.y + i, pixel.R, pixel.G, pixel.B);
         }
     }
@@ -120,7 +120,7 @@ void Drawer::rightOrientationDraw(Picture &pic, Vec2 start, Vec2 dim, Vec2 pos,
     pos += pic.dim().flip();
     for (int i = 0; i < dim.x; i++) {
         for (int j = 0; j < dim.y; j++) {
-            color pixel = pic.picData[iStart.x + i][iStart.y + j];
+            color pixel = pic.getPixel(iStart.x + i,iStart.y + j);
             g.plotPixel(pos.x - i, pos.y - j, pixel.R, pixel.G, pixel.B);
         }
     }
@@ -132,7 +132,7 @@ void Drawer::flippedOrientationDraw(Picture &pic, Vec2 start, Vec2 dim,
     pos += pic.dim();
     for (int i = 0; i < dim.x; i++) {
         for (int j = 0; j < dim.y; j++) {
-            color pixel = pic.picData[iStart.x + i][iStart.y + j];
+            color pixel = pic.getPixel(iStart.x + i,iStart.y + j);
             g.plotPixel(pos.x - j, pos.y - i, pixel.R, pixel.G, pixel.B);
         }
     }
@@ -142,7 +142,7 @@ void Drawer::leftOrientationDraw(Picture &pic, Vec2 start, Vec2 dim, Vec2 pos,
     iVec2 iStart = start.toIVec2();
     for (int i = 0; i < dim.x; i++) {
         for (int j = 0; j < dim.y; j++) {
-            color pixel = pic.picData[iStart.x + i][iStart.y + j];
+            color pixel = pic.getPixel(iStart.x + i,iStart.y + j);
             g.plotPixel(pos.x + i, pos.y + j, pixel.R, pixel.G, pixel.B);
         }
     }

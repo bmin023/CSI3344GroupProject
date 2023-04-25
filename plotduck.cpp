@@ -20,14 +20,14 @@ int main(){
     input >> c;
     cout << "r: " << r << " c: " << c << endl;*/
     Picture duckPhoto = Picture("colors.jpg.txt");
-    Picture mask = Picture("biggump.png.txt");
+    Picture mask = Picture("sidebump.png.txt");
     SDL_Plotter window (1000, 1000, true);
     cout << "window created" << endl;
     Drawer drawer = Drawer(window);
     cout << "drawer created" << endl;
     Piece duck = Piece(duckPhoto, Vec2(0,0), Vec2(0,0));
     cout << "duck created" << endl;
-    Edge topEdge = Edge(mask);
+    Edge topEdge = Edge(mask,true);
     duck.setEdge(NORMAL, topEdge);
     duck.setEdge(RIGHT, topEdge);
     duck.setEdge(FLIPPED, topEdge);
