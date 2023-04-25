@@ -163,24 +163,25 @@ void Drawer::topOrientationMask(Picture &pic, Picture &mask, Vec2 maskStart,
 void Drawer::rightOrientationMask(Picture &pic, Picture &mask, Vec2 maskStart,
                                   Vec2 pos, Orientation orient) {
     iVec2 start = maskStart.toIVec2();
-    pos += mask.dim().flip();
+    start.x += mask.height;
+    pos.x += mask.height;
     for (int i = 0; i < mask.height; i++) {
         for (int j = 0; j < mask.width; j++) {
-            color pixel = pic.picData[i + start.x][j + start.y];
+            color pixel = pic.picData[start.y + j][start.x - i];
             color maskPixel = mask.getPixel(i, j);
             if (maskPixel.R != 0 && maskPixel.G != 0 && maskPixel.B != 0) {
-                g.plotPixel(pos.x - i, pos.y - j, pixel.R, pixel.G, pixel.B);
+                g.plotPixel(pos.x - i, pos.y + j, pixel.R, pixel.G, pixel.B);
             }
         }
     }
 }
 void Drawer::flippedOrientationMask(Picture &pic, Picture &mask, Vec2 maskStart,
                                     Vec2 pos, Orientation orient) {
-    iVec2 start = maskStart.toIVec2();
+    iVec2 start = (maskStart + mask.dim()).toIVec2();
     pos += mask.dim();
     for (int i = 0; i < mask.height; i++) {
         for (int j = 0; j < mask.width; j++) {
-            color pixel = pic.picData[i + start.x][j + start.y];
+            color pixel = pic.picData[start.x - i][start.y - j];
             color maskPixel = mask.getPixel(i, j);
             if (maskPixel.R != 0 && maskPixel.G != 0 && maskPixel.B != 0) {
                 g.plotPixel(pos.x - j, pos.y - i, pixel.R, pixel.G, pixel.B);
@@ -191,12 +192,14 @@ void Drawer::flippedOrientationMask(Picture &pic, Picture &mask, Vec2 maskStart,
 void Drawer::leftOrientationMask(Picture &pic, Picture &mask, Vec2 maskStart,
                                  Vec2 pos, Orientation orient) {
     iVec2 start = maskStart.toIVec2();
+    start.y += mask.width;
+    pos.y += mask.width;
     for (int i = 0; i < mask.height; i++) {
         for (int j = 0; j < mask.width; j++) {
-            color pixel = pic.picData[i + start.x][j + start.y];
+            color pixel = pic.picData[start.y - j][i + start.x];
             color maskPixel = mask.getPixel(i, j);
             if (maskPixel.R != 0 && maskPixel.G != 0 && maskPixel.B != 0) {
-                g.plotPixel(pos.x + i, pos.y + j, pixel.R, pixel.G, pixel.B);
+                g.plotPixel(pos.x + i, pos.y - j, pixel.R, pixel.G, pixel.B);
             }
         }
     }
