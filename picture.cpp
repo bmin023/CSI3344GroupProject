@@ -109,7 +109,7 @@ void Drawer::topOrientationDraw(Picture &pic, Vec2 start, Vec2 dim, Vec2 pos,
     iVec2 iDim = dim.toIVec2();
     for (int i = 0; i < iDim.y; i++) {
         for (int j = 0; j < iDim.x; j++) {
-            color pixel = pic.getPixel(iStart.x + i,iStart.y + j);
+            color pixel = pic.getPixel(iStart.y + i,iStart.x + j);
             g.plotPixel(pos.x + j, pos.y + i, pixel.R, pixel.G, pixel.B);
         }
     }
@@ -153,9 +153,9 @@ void Drawer::topOrientationMask(Picture &pic, Picture &mask, Vec2 maskStart,
     iVec2 start = maskStart.toIVec2();
     for (int i = 0; i < mask.height; i++) {
         for (int j = 0; j < mask.width; j++) {
-            color pixel = pic.picData[i + start.x][j + start.y];
+            color pixel = pic.picData[i + start.y][j + start.x];
             color maskPixel = mask.getPixel(i, j);
-            if (maskPixel.R == 255 && maskPixel.G == 255 && maskPixel.B == 255) {
+            if (maskPixel.R != 0 && maskPixel.G != 0 && maskPixel.B != 0) {
                 g.plotPixel(pos.x + j, pos.y + i, pixel.R, pixel.G, pixel.B);
             }
         }
@@ -182,7 +182,7 @@ void Drawer::flippedOrientationMask(Picture &pic, Picture &mask, Vec2 maskStart,
     pos += mask.dim();
     for (int i = 0; i < mask.height; i++) {
         for (int j = 0; j < mask.width; j++) {
-            color pixel = pic.picData[start.x - i][start.y - j];
+            color pixel = pic.picData[start.y - i][start.x - j];
             color maskPixel = mask.getPixel(i, j);
             if (maskPixel.R == 255 && maskPixel.G == 255 && maskPixel.B == 255) {
                 g.plotPixel(pos.x - j, pos.y - i, pixel.R, pixel.G, pixel.B);
