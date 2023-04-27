@@ -8,7 +8,7 @@
 
 using namespace std;
 
-int main(){
+int main(int argc, char ** argv){
     /*ifstream input;
     input.open("pixelduck.txt");
     if(!input){
