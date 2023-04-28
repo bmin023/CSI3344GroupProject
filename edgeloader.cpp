@@ -23,7 +23,7 @@ EdgeLoader::EdgeLoader() {
     // }
     // closedir(dir);
     // cout << "Loaded " << numEdges << " edges." << endl;
-    numEdges = 6;
+    numEdges = 9;
     edges = new Picture *[numEdges];
     edges[0] = new Picture("./pictureTXTs/edges/sidebump.png.txt");
     edges[1] = new Picture("./pictureTXTs/edges/Bumpy.png.txt");
@@ -31,6 +31,9 @@ EdgeLoader::EdgeLoader() {
     edges[3] = new Picture("./pictureTXTs/edges/cauldron.png.txt");
     edges[4] = new Picture("./pictureTXTs/edges/dog.png.txt");
     edges[5] = new Picture("./pictureTXTs/edges/hook.png.txt");
+    edges[6] = new Picture("./pictureTXTs/edges/mushrooms.png.txt");
+    edges[7] = new Picture("./pictureTXTs/edges/teeth.png.txt");
+    edges[8] = new Picture("./pictureTXTs/edges/horns.png.txt");
 }
 
 EdgeLoader::~EdgeLoader() {
