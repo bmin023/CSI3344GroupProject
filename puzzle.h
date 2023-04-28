@@ -8,11 +8,15 @@
 class Puzzle{
     private: 
         Picture* picture;
+        Picture* edge; //temporary edge
         Piece*** pieceTable; //2d array of piece pointers
+        int numAcross;
+        int numDown;
      public:
         Puzzle(string filename);
+        ~Puzzle();
+        void draw(Drawer &drawer);
         //window.mouseClick()
         bool mouseClick();
-
 };
 #endif //PUZZLE_H_INCLUDED

@@ -16,7 +16,7 @@ Edge::~Edge() { cout << "edge delete" << endl; }
 color Edge::getPixel(int x, int y) {
     color col;
     if (picData == nullptr) {
-        if (y < height / 2) {
+        if (x < height/2 || y < height/2 || y > width - height/2) {
             col = color(0, 0, 0);
         } else {
             col = color(255, 255, 255);

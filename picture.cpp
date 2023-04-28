@@ -88,8 +88,11 @@ void Drawer::drawPart(Picture &pic, Vec2 start, Vec2 dim, Vec2 pos,
 }
 void Drawer::drawMask(Picture &pic, Picture &mask, Vec2 maskStart, Vec2 pos,
                       Orientation orient) {
-    assert(maskStart.x + mask.width <= pic.width);
-    assert(maskStart.y + mask.height <= pic.height);
+    cout << "maskStart: " << maskStart << endl;
+    cout << "mask: " << mask.dim() << endl;
+    cout << "pic: " << pic.dim() << endl; 
+    // assert(maskStart.x + mask.width <= pic.width);
+    // assert(maskStart.y + mask.height <= pic.height);
     switch (orient) {
     case NORMAL:
         topOrientationMask(pic, mask, maskStart, pos, orient);
