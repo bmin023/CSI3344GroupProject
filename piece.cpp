@@ -7,9 +7,10 @@ Edge::Edge(Picture &pic, bool inverted) : Picture() {
     width = pic.width;
     height = pic.height;
     picData = pic.picData;
+    this->owner = false;
 }
 
-Edge::~Edge() {}
+Edge::~Edge() { }
 
 color Edge::getPixel(int x, int y) {
     color col;
@@ -86,4 +87,23 @@ void Piece::draw(Drawer &drawer) {
 
 void Piece::setNeighbor(int index, Piece* neighbor){
     this->neighborArr[index] = neighbor;
+}
+
+/*
+*       isClicked
+*  Description:    This function checks to see if the piece has been clicked on
+*                  by checking to see if the point falls within the bounds of
+*                  the given piece.
+*  return:         bool - true if the piece has been clicked on, false otherwise 
+*  precondition:   there exists a piece object 
+*  post-condition: nothing is changed 
+*
+*/
+bool Piece::isClicked(point p) {
+    //store the x and y values of the point
+    int x = p.x, y = p.y;
+        //this checks x values
+    return x >= pos.x && x <= pos.x + 128 &&
+        //this checks y values
+        y >= pos.y && y <= pos.y + 128;
 }

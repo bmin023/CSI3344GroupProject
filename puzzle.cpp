@@ -4,11 +4,12 @@
 
 Puzzle::Puzzle(string filename) {
     this->picture = new Picture(filename);
-    this->edge = new Picture("./pictureTXTs/sidebump.png.txt");
-    Edge norm = Edge(*edge);
-    Edge inv = Edge(*edge, true);
+    cout << "picture width: " << picture->getWidth() << endl;
+    cout << "picture height: " << picture->getHeight() << endl;
     this->numAcross = picture->getWidth() / 96;
     this->numDown = picture->getHeight() / 96;
+    cout << "numAcross: " << numAcross << endl;
+    cout << "numDown: " << numDown << endl;
 
     this->pieceTable = new Piece **[numDown];
     for (int i = 0; i < numDown; i++) {
@@ -24,6 +25,10 @@ Puzzle::Puzzle(string filename) {
             imgOffStart = Vec2(16 + j * 96, 16 + i * 96);
             posOnScreen = Vec2(j * 116, i * 116);
             pieceTable[i][j] = new Piece(*picture, imgOffStart, posOnScreen);
+            bool flip = false;
+            Picture *edge = edgeLoader.getRandomEdge(flip);
+            Edge norm = Edge(*edge, flip);
+            Edge inv = Edge(*edge, !flip);
 
             if (j > 0) {
                 pieceTable[i][j]->setNeighbor(
@@ -60,13 +65,14 @@ Puzzle::Puzzle(string filename) {
 }
 
 Puzzle::~Puzzle() {
-    for (int i = 0; i < picture->getHeight() / 96; i++) {
-        for (int j = 0; j < picture->getWidth() / 96; j++) {
+    for (int i = 0; i < numDown; i++) {
+        for (int j = 0; j < numAcross; j++) {
             delete pieceTable[i][j];
         }
         delete[] pieceTable[i];
     }
     delete[] pieceTable;
+    delete picture;
 }
 
 void Puzzle::draw(Drawer &drawer) {
@@ -77,16 +83,29 @@ void Puzzle::draw(Drawer &drawer) {
     }
 }
 
-// bool Puzzle::mouseClick(point p){
-// 	//return SDL_Plotter.click_queue.size() > 0;
-//     //point SDL_Plotter::getMouseClick(){
-// 	//point p;
-//     //if(click_queue.size() > 0){
-//     	//p = click_queue.front();
-//     	//click_queue.pop();
-//     //}
-//
-// 	//return p;
-//     SDL_Plotter.getMouseClick();
-//
-// }
+/*
+*       TitleOfFunction: mouseClick
+*  Description:    This will check to see if the mouse has clicked on a piece
+*  return:         bool - true if a piece was clicked on, false otherwise
+*  precondition:   there are puzzles on the screen
+*  post-condition: nothing is changed after click
+*
+*/
+ bool Puzzle::mouseClick(point p, Piece* selectedPiece){
+    //this bool variable will be useful in the event we need to debug
+    bool pieceClickedOn = false;
+    //linear search below, this is fine because there will not be many pieces
+    for(int i = 0; i < numDown; i++){
+        for(int j = 0; j < numAcross; j++){
+            //call the isClicked function from piece
+            if(pieceTable[i][j]->isClicked(p)){
+                selectedPiece = pieceTable[i][j];
+                cout << "piece at " << i << ", " << j << " was clicked on" << endl;
+                pieceClickedOn = true;
+                return pieceClickedOn;
+            }
+        }
+    }
+
+    return pieceClickedOn;
+ }

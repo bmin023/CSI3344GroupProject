@@ -11,9 +11,9 @@ class Edge : public Picture {
     public:
         Edge(Picture &pic, bool inverted = false);
         Edge();
+        ~Edge() override;
         Edge operator=(const Edge &other);
         color getPixel(int x, int y) override;
-        ~Edge();
 };
 
 class Piece{
@@ -26,6 +26,7 @@ class Piece{
     Vec2 pos;
 
     public:
+    bool isClicked(point p);
     Piece(Picture& image, Vec2 imagePos, Vec2 pos);
     void draw(Drawer& drawer);
     void setEdge(Orientation orient, Edge edge) {

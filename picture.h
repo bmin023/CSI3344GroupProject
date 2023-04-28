@@ -7,6 +7,8 @@
 #include <fstream>
 
 class Picture {
+    protected:
+        bool owner;
     public:
         int width, height;
         color **picData; // 2d array that contains color of each pixel in picture
@@ -16,8 +18,7 @@ class Picture {
             height = 0;
             picData = nullptr;
         };
-        // ~Picture();
-        void dealloc();
+        virtual ~Picture();
         Vec2 dim();
         virtual color getPixel(int x, int y);
         int getWidth();
