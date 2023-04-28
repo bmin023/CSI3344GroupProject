@@ -32,9 +32,14 @@ int main(int argc, char ** argv){
 
     while(!window.getQuit()){
         while(state == TITLE && !window.getQuit()){
-            t.Write("EPIC PUZZLE GAME", window, Vec2(80, 160), color(0,0,0), 5, false);
+            t.Write("EPIC PUZZLE GAME", window, Vec2(100, 160), color(0,0,0), 5, false);
+            t.Write("Djisktras Disciples", window, Vec2(100, 220), color(0,0,0), 3, false);
+            t.Write("Click to begin", window, Vec2(100, 300), color(255,0,0), 7, false);
             if (window.mouseClick()){
                 state = PLAY;  //if space is hit, game is in PLAY state
+                t.Write("EPIC PUZZLE GAME", window, Vec2(100, 160), color(255,255,255), 5, false); 
+                t.Write("Djisktras Disciples", window, Vec2(100, 220), color(255,255,255), 3, false);     
+                t.Write("Click to begin", window, Vec2(100, 300), color(255,255,255), 7, false);      
             }
             window.update();
         }
