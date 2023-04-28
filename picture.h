@@ -37,6 +37,7 @@ class Drawer {
 
     private:
         SDL_Plotter &g;
+        void drawPixel(int x, int y, color c);
         void topOrientationDraw(Picture &pic, Vec2 start, Vec2 dim, Vec2 pos,
                       Orientation orient = NORMAL);
         void rightOrientationDraw(Picture &pic, Vec2 start, Vec2 dim, Vec2 pos,

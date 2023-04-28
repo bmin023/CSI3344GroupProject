@@ -7,11 +7,9 @@ Edge::Edge(Picture &pic, bool inverted) : Picture() {
     width = pic.width;
     height = pic.height;
     picData = pic.picData;
-    cout << height << endl;
-    cout << width << endl;
 }
 
-Edge::~Edge() { cout << "edge delete" << endl; }
+Edge::~Edge() {}
 
 color Edge::getPixel(int x, int y) {
     color col;
@@ -48,21 +46,17 @@ color Edge::getPixel(int x, int y) {
 }
 
 Edge Edge::operator=(const Edge &other) {
-    cout << "edge copy" << endl;
     picData = other.picData;
     width = other.width;
     height = other.height;
     inverted = other.inverted;
-    cout << "edge copy done" << endl;
     return *this;
 }
 
 Edge::Edge() : Picture() {
-    cout << "make" << endl;
     width = 128;
     height = 32;
     picData = nullptr;
-    cout << "done" << endl;
 }
 
 Piece::Piece(Picture &image, Vec2 imagePos, Vec2 pos)

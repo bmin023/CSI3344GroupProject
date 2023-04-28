@@ -20,7 +20,7 @@ int main(int argc, char ** argv){
     Picture duckPhoto = Picture(colorPNG);
     Picture mask = Picture(sideBumpPNG);
     Picture othermask = Picture(dogPNG);
-    SDL_Plotter window (1500, 1500, true);
+    SDL_Plotter window (1000, 1000, true);
     Drawer drawer = Drawer(window);
     Puzzle puzzle = Puzzle(colorPNG);
 

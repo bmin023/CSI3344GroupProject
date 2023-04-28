@@ -17,13 +17,13 @@ Puzzle::Puzzle(string filename) {
 
     Vec2 imgOffStart = Vec2(0, 0); // remember it is (y, x)! (Only for accessing
                                    // the picture. Piece coordinates are (x, y))
-    Vec2 posOnScreen = Vec2(0, 0);
+    Vec2 posOnScreen = Vec2(20, 20);
 
     for (int i = 0; i < numDown; i++) {
         for (int j = 0; j < numAcross; j++) {
-            pieceTable[i][j] = new Piece(*picture, imgOffStart, posOnScreen);
             imgOffStart = Vec2(16 + j * 96, 16 + i * 96);
             posOnScreen = Vec2(j * 116, i * 116);
+            pieceTable[i][j] = new Piece(*picture, imgOffStart, posOnScreen);
 
             if (j > 0) {
                 pieceTable[i][j]->setNeighbor(
