@@ -162,7 +162,7 @@ void Drawer::topOrientationMask(Picture &pic, Picture &mask, Vec2 maskStart,
     iVec2 start = maskStart.toIVec2();
     for (int i = 0; i < mask.height; i++) {
         for (int j = 0; j < mask.width; j++) {
-            color pixel = pic.picData[i + start.y][j + start.x];
+            color pixel = pic.getPixel(i + start.y,j + start.x);
             color maskPixel = mask.getPixel(i, j);
             if (maskPixel.R != 0 && maskPixel.G != 0 && maskPixel.B != 0) {
                 drawPixel(pos.x + j, pos.y + i, pixel);
@@ -177,7 +177,7 @@ void Drawer::rightOrientationMask(Picture &pic, Picture &mask, Vec2 maskStart,
     pos.x += mask.height;
     for (int i = 0; i < mask.height; i++) {
         for (int j = 0; j < mask.width; j++) {
-            color pixel = pic.picData[start.y + j][start.x - i];
+            color pixel = pic.getPixel(start.y + j,start.x - i);
             color maskPixel = mask.getPixel(i, j);
             if (maskPixel.R == 255 && maskPixel.G == 255 && maskPixel.B == 255) {
                 drawPixel(pos.x - i, pos.y + j, pixel);
@@ -191,7 +191,7 @@ void Drawer::flippedOrientationMask(Picture &pic, Picture &mask, Vec2 maskStart,
     pos += mask.dim();
     for (int i = 0; i < mask.height; i++) {
         for (int j = 0; j < mask.width; j++) {
-            color pixel = pic.picData[start.y - i][start.x - j];
+            color pixel = pic.getPixel(start.y - i,start.x - j);
             color maskPixel = mask.getPixel(i, j);
             if (maskPixel.R == 255 && maskPixel.G == 255 && maskPixel.B == 255) {
                 drawPixel(pos.x - j, pos.y - i, pixel);
@@ -206,7 +206,7 @@ void Drawer::leftOrientationMask(Picture &pic, Picture &mask, Vec2 maskStart,
     pos.y += mask.width;
     for (int i = 0; i < mask.height; i++) {
         for (int j = 0; j < mask.width; j++) {
-            color pixel = pic.picData[start.y - j][i + start.x];
+            color pixel = pic.getPixel(start.y - j,i + start.x);
             color maskPixel = mask.getPixel(i, j);
             if (maskPixel.R == 255 && maskPixel.G == 255 && maskPixel.B == 255) {
                 drawPixel(pos.x + i, pos.y - j, pixel);

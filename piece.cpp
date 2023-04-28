@@ -79,19 +79,22 @@ Piece::Piece(Picture &image, Vec2 imagePos, Vec2 pos)
     orientation = NORMAL;
 }
 
-void Piece::draw(Drawer &drawer) {
+void Piece::draw(Drawer &drawer) { 
+    draw(drawer, image); 
+}
+void Piece::draw(Drawer &drawer, Picture &pic) {
     Vec2 pictureDim = Vec2(128, 128);
     Vec2 edgedim = Vec2(128, 32);
     Vec2 unitVec = Vec2(1, 1);
-    drawer.drawMask(image, topEdge, imagePos, pos);
+    drawer.drawMask(pic, topEdge, imagePos, pos);
     drawer.drawMask(
-        image, bottomEdge, imagePos + pictureDim.ycomp() - edgedim.ycomp(),
+        pic, bottomEdge, imagePos + pictureDim.ycomp() - edgedim.ycomp(),
         pos + pictureDim.ycomp() - edgedim.ycomp(), Orientation::FLIPPED);
-    drawer.drawMask(image, lEdge, imagePos, pos, Orientation::LEFT);
+    drawer.drawMask(pic, lEdge, imagePos, pos, Orientation::LEFT);
     drawer.drawMask(
-        image, rEdge, imagePos + edgedim.xcomp() - edgedim.ycomp().flip(),
+        pic, rEdge, imagePos + edgedim.xcomp() - edgedim.ycomp().flip(),
         pos + edgedim.xcomp() - edgedim.ycomp().flip(), Orientation::RIGHT);
-    drawer.drawPart(image, imagePos + edgedim.splaty(),
+    drawer.drawPart(pic, imagePos + edgedim.splaty(),
                     pictureDim - edgedim.splaty() * 2 + UNIT,
                     pos + edgedim.splaty(), Orientation::NORMAL);
 }
@@ -121,4 +124,8 @@ bool Piece::isClicked(point p) {
 
 void Piece::setPos(const Vec2 &newPos){
     pos = newPos;
+}
+
+Vec2 Piece::getPos() const {
+    return pos;
 }
