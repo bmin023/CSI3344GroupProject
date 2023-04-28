@@ -7,9 +7,10 @@ Edge::Edge(Picture &pic, bool inverted) : Picture() {
     width = pic.width;
     height = pic.height;
     picData = pic.picData;
+    this->owner = false;
 }
 
-Edge::~Edge() {}
+Edge::~Edge() { }
 
 color Edge::getPixel(int x, int y) {
     color col;

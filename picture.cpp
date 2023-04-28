@@ -36,12 +36,13 @@ Picture::Picture(string filename) {
     }
 }
 
-void Picture::dealloc() {
-    for (int i = 0; i < height; i++) {
-        delete[] picData[i];
+Picture::~Picture() { 
+    if(owner){
+        for(int i = 0; i < height; i++){
+            delete[] picData[i];
+        }
+        delete[] picData;
     }
-
-    delete[] picData;
 }
 
 color Picture::getPixel(int x, int y) { return picData[x][y]; }

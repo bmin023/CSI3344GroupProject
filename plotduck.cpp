@@ -51,9 +51,6 @@ int main(int argc, char ** argv){
         //    //and we move until the window is clicked again
         // }
     }
-    othermask.dealloc();
-    duckPhoto.dealloc();
-    mask.dealloc();
     return 0;
 }
 

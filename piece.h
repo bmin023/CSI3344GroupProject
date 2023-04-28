@@ -11,9 +11,9 @@ class Edge : public Picture {
     public:
         Edge(Picture &pic, bool inverted = false);
         Edge();
+        ~Edge() override;
         Edge operator=(const Edge &other);
         color getPixel(int x, int y) override;
-        ~Edge();
 };
 
 class Piece{
