@@ -16,6 +16,7 @@ int main(int argc, char ** argv){
     string colorPNG = "./picturetxts/colors.jpg.txt";
     string sideBumpPNG = "./picturetxts/sidebump.png.txt";
     string dogPNG = "./picturetxts/dog.png.txt";
+    Piece* selectedPiece;
 
     Picture duckPhoto = Picture(colorPNG);
     Picture mask = Picture(sideBumpPNG);
@@ -28,6 +29,12 @@ int main(int argc, char ** argv){
         if(window.mouseClick()){
             puzzle.draw(drawer);
             window.update();
+            //check for mouse click on puzzle
+            if(puzzle.mouseClick(window.getMouseClick(), selectedPiece)){
+                //verifying cout statement for mouse click
+                cout << "selectedPiece: " << &selectedPiece << endl;
+                
+            }
         }
         //if the puzzel piece is clicked on
         // if(/* Puzzel.mouseClick(window.getMouseClick()) */){
@@ -51,7 +58,7 @@ int main(int argc, char ** argv){
 }
 
 
-// bool movePiece(Piece& piece, Vec2& loc, Vc2& offset){
-//     
-//     
-// }
+ //bool movePiece(Piece& piece, Vec2& loc, Vc2& offset){
+     
+     
+ //}

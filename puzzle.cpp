@@ -77,16 +77,29 @@ void Puzzle::draw(Drawer &drawer) {
     }
 }
 
-// bool Puzzle::mouseClick(point p){
-// 	//return SDL_Plotter.click_queue.size() > 0;
-//     //point SDL_Plotter::getMouseClick(){
-// 	//point p;
-//     //if(click_queue.size() > 0){
-//     	//p = click_queue.front();
-//     	//click_queue.pop();
-//     //}
-//
-// 	//return p;
-//     SDL_Plotter.getMouseClick();
-//
-// }
+/*
+*       TitleOfFunction: mouseClick
+*  Description:    This will check to see if the mouse has clicked on a piece
+*  return:         bool - true if a piece was clicked on, false otherwise
+*  precondition:   there are puzzles on the screen
+*  post-condition: nothing is changed after click
+*
+*/
+ bool Puzzle::mouseClick(point p, Piece* selectedPiece){
+    //this bool variable will be useful in the event we need to debug
+    bool pieceClickedOn = false;
+    //linear search below, this is fine because there will not be many pieces
+    for(int i = 0; i < numDown; i++){
+        for(int j = 0; j < numAcross; j++){
+            //call the isClicked function from piece
+            if(pieceTable[i][j]->isClicked(p)){
+                selectedPiece = pieceTable[i][j];
+                cout << "piece at " << i << ", " << j << " was clicked on" << endl;
+                pieceClickedOn = true;
+                return pieceClickedOn;
+            }
+        }
+    }
+
+    return pieceClickedOn;
+ }

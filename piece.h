@@ -26,6 +26,7 @@ class Piece{
     Vec2 pos;
 
     public:
+    bool isClicked(point p);
     Piece(Picture& image, Vec2 imagePos, Vec2 pos);
     void draw(Drawer& drawer);
     void setEdge(Orientation orient, Edge edge) {

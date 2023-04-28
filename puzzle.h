@@ -17,6 +17,6 @@ class Puzzle{
         ~Puzzle();
         void draw(Drawer &drawer);
         //window.mouseClick()
-        bool mouseClick();
+        bool mouseClick(point p, Piece* selectedPiece);
 };
 #endif //PUZZLE_H_INCLUDED
