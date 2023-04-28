@@ -26,6 +26,7 @@ class Piece{
     Vec2 pos;
 
     public:
+    void setPos(const Vec2 &newPos);
     bool isClicked(point p);
     Piece(Picture& image, Vec2 imagePos, Vec2 pos);
     void draw(Drawer& drawer);

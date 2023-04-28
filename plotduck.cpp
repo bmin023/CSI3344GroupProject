@@ -10,7 +10,7 @@
 
 using namespace std;
 
-bool movePiece(Piece& piece, Vec2& loc, Vec2& offset);
+void movePiece(Piece& piece, point p, Drawer& drawer);
 
 int main(int argc, char ** argv){
     string colorPNG = "./picturetxts/colors.jpg.txt";
@@ -24,32 +24,26 @@ int main(int argc, char ** argv){
             puzzle.draw(drawer);
             window.update();
             //check for mouse click on puzzle
-            if(puzzle.mouseClick(window.getMouseClick(), selectedPiece)){
+            if(puzzle.mouseClick(window.getMouseClick(), &selectedPiece)){
                 //verifying cout statement for mouse click
-                cout << "selectedPiece: " << &selectedPiece << endl;
+                while (selectedPiece != NULL){
+                    point p;
+                    window.getMouseLocation(p.x, p.y);
+                    movePiece(*selectedPiece, p, drawer);
+                    
+                }
                 
             }
         }
-        //if the puzzel piece is clicked on
-        // if(/* Puzzel.mouseClick(window.getMouseClick()) */){
-        //     /*
-        //     window knows where the mouse click was, puzzle knows where
-        //     all of its puzzle pieces are. We pass in the mouse click to puzzle
-        //     object so it can check all of its members to see if the mouse click
-        //     was on any of the puzzle pieces.
-        //     
-        //     */
-        //
-        //
-        //    //now we call the move function if this was true
-        //    //and we move until the window is clicked again
-        // }
+        
     }
     return 0;
 }
 
 
- //bool movePiece(Piece& piece, Vec2& loc, Vc2& offset){
-     
-     
- //}
+void movePiece(Piece& selectedPiece, point p, Drawer& drawer){
+    int x = p.x, y = p.y;
+    Vec2 newPos(x,y);
+    piece.setPos(newPos);
+    piece.draw(drawer);
+}

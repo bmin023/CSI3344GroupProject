@@ -91,7 +91,8 @@ void Puzzle::draw(Drawer &drawer) {
 *  post-condition: nothing is changed after click
 *
 */
- bool Puzzle::mouseClick(point p, Piece* selectedPiece){
+bool Puzzle::mouseClick(point p, Piece** selectedPiece){
+
     //this bool variable will be useful in the event we need to debug
     bool pieceClickedOn = false;
     //linear search below, this is fine because there will not be many pieces
@@ -99,7 +100,7 @@ void Puzzle::draw(Drawer &drawer) {
         for(int j = 0; j < numAcross; j++){
             //call the isClicked function from piece
             if(pieceTable[i][j]->isClicked(p)){
-                selectedPiece = pieceTable[i][j];
+                *selectedPiece = pieceTable[i][j];
                 cout << "piece at " << i << ", " << j << " was clicked on" << endl;
                 pieceClickedOn = true;
                 return pieceClickedOn;

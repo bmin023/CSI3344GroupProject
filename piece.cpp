@@ -107,3 +107,7 @@ bool Piece::isClicked(point p) {
         //this checks y values
         y >= pos.y && y <= pos.y + 128;
 }
+
+void Piece::setPos(const Vec2 &newPos){
+    pos = newPos;
+}
