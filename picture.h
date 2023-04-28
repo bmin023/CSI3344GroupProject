@@ -9,8 +9,7 @@
 class Picture {
     public:
         int width, height;
-        color *
-            *picData; // 2d array that contains color of each pixel in picture
+        color **picData; // 2d array that contains color of each pixel in picture
         Picture(string filename);
         Picture(){
             width = 0;
@@ -21,6 +20,8 @@ class Picture {
         void dealloc();
         Vec2 dim();
         virtual color getPixel(int x, int y);
+        int getWidth();
+        int getHeight();
 };
 
 enum Orientation { NORMAL, RIGHT, FLIPPED, LEFT };
