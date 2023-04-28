@@ -15,6 +15,17 @@ Edge::~Edge() { owner = false; }
 color Edge::getPixel(int x, int y) {
     color col;
     if (picData == nullptr) {
+        int abs = (x - height / 2);
+        // if (abs < 0) {
+        //     abs = -abs;
+        // }
+        if (y < abs + height / 2) {
+            return color(255, 0, 0);
+        }
+        if (y > -abs + width - height / 2) {
+            col = color(0, 255, 0);
+            return col;
+        }
         if (x < height/2 || y < height/2 || y > width - height/2) {
             col = color(0, 0, 0);
         } else {
