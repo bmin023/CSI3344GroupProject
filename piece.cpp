@@ -9,8 +9,6 @@ Edge::Edge(Picture &pic, bool inverted) : Picture() {
     picData = pic.picData;
 }
 
-Edge::~Edge() {}
-
 color Edge::getPixel(int x, int y) {
     color col;
     if (picData == nullptr) {

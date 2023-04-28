@@ -13,7 +13,6 @@ class Edge : public Picture {
         Edge();
         Edge operator=(const Edge &other);
         color getPixel(int x, int y) override;
-        ~Edge();
 };
 
 class Piece{

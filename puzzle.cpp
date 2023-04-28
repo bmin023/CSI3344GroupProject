@@ -4,9 +4,6 @@
 
 Puzzle::Puzzle(string filename) {
     this->picture = new Picture(filename);
-    this->edge = new Picture("./pictureTXTs/sidebump.png.txt");
-    Edge norm = Edge(*edge);
-    Edge inv = Edge(*edge, true);
     this->numAcross = picture->getWidth() / 96;
     this->numDown = picture->getHeight() / 96;
 
@@ -24,6 +21,10 @@ Puzzle::Puzzle(string filename) {
             imgOffStart = Vec2(16 + j * 96, 16 + i * 96);
             posOnScreen = Vec2(j * 116, i * 116);
             pieceTable[i][j] = new Piece(*picture, imgOffStart, posOnScreen);
+            bool flip = false;
+            Picture *edge = edgeLoader.getRandomEdge(flip);
+            Edge norm = Edge(*edge, flip);
+            Edge inv = Edge(*edge, !flip);
 
             if (j > 0) {
                 pieceTable[i][j]->setNeighbor(
@@ -67,6 +68,8 @@ Puzzle::~Puzzle() {
         delete[] pieceTable[i];
     }
     delete[] pieceTable;
+    picture->dealloc();
+    delete picture;
 }
 
 void Puzzle::draw(Drawer &drawer) {

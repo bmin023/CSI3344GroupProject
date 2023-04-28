@@ -16,7 +16,6 @@ class Picture {
             height = 0;
             picData = nullptr;
         };
-        // ~Picture();
         void dealloc();
         Vec2 dim();
         virtual color getPixel(int x, int y);
