@@ -7,7 +7,7 @@ Picture::Picture(string filename) {
     ifstream input;
     input.open(filename);
     if (!input) {
-        cerr << "ERROR COULD NOT OPEN FILE";
+        cerr << "ERROR COULD NOT OPEN FILE" << filename << endl;
     } else {
         input >> this->height;
         input >> this->width;
