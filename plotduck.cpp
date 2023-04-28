@@ -15,8 +15,6 @@ bool movePiece(Piece& piece, Vec2& loc, Vec2& offset);
 int main(int argc, char ** argv){
     string colorPNG = "./picturetxts/colors.jpg.txt";
     Piece* selectedPiece;
-
-    Picture duckPhoto = Picture(colorPNG);
     SDL_Plotter window (1000, 1000, true);
     Drawer drawer = Drawer(window);
     Puzzle puzzle = Puzzle(colorPNG);

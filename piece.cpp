@@ -10,7 +10,7 @@ Edge::Edge(Picture &pic, bool inverted) : Picture() {
     this->owner = false;
 }
 
-Edge::~Edge() { }
+Edge::~Edge() { owner = false; }
 
 color Edge::getPixel(int x, int y) {
     color col;

@@ -6,6 +6,7 @@
 Picture::Picture(string filename) {
     ifstream input;
     input.open(filename);
+    owner = true;
     if (!input) {
         cerr << "ERROR COULD NOT OPEN FILE" << filename << endl;
     } else {
@@ -38,6 +39,7 @@ Picture::Picture(string filename) {
 
 Picture::~Picture() { 
     if(owner){
+        cout << this->dim() << " delete?" << endl;
         for(int i = 0; i < height; i++){
             delete[] picData[i];
         }
