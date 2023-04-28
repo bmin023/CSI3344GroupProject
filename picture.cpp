@@ -47,6 +47,9 @@ void Picture::dealloc() {
 
 color Picture::getPixel(int x, int y) { return picData[x][y]; }
 
+int Picture::getWidth(){return this->width;}
+int Picture::getHeight(){return this->height;}
+
 Vec2 Picture::dim() { return Vec2(width, height); }
 
 void Drawer::drawPicture(Picture &pic, Vec2 pos, Orientation orient) {

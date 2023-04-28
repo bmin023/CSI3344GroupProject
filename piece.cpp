@@ -95,3 +95,7 @@ void Piece::draw(Drawer &drawer) {
                     pictureDim - edgedim.splaty() * 2 + UNIT,
                     pos + edgedim.splaty(), Orientation::NORMAL);
 }
+
+void Piece::setNeighbor(int index, Piece* neighbor){
+    this->neighborArr[index] = neighbor;
+}

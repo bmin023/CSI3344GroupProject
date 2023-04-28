@@ -30,11 +30,8 @@
 *.exe
 *.out
 *.app
-<<<<<<< HEAD
+
+**/.DS_STORE
 
 .vscode/
 .cmake/
-=======
-.vscode/
-.cmake/
->>>>>>> 1d7bb9230f5a05ca94a2a1bb713db7c1535b8c26

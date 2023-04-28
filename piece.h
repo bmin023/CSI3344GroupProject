@@ -24,6 +24,7 @@ class Piece{
     Orientation orientation;
     Edge topEdge, bottomEdge, lEdge, rEdge;
     Vec2 pos;
+
     public:
     Piece(Picture& image, Vec2 imagePos, Vec2 pos);
     void draw(Drawer& drawer);
@@ -43,6 +44,7 @@ class Piece{
                 break;
         }
     }
+    void setNeighbor(int index, Piece* neighbor);
 };
 
 #endif // PIECE_H_INCLUDED
