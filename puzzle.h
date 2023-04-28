@@ -11,6 +11,8 @@ class Puzzle{
         Piece*** pieceTable; //2d array of piece pointers
      public:
         Puzzle(string filename);
+        //window.mouseClick()
+        bool mouseClick();
 
 };
 #endif //PUZZLE_H_INCLUDED

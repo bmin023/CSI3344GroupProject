@@ -9,6 +9,8 @@
 
 using namespace std;
 
+bool movePiece(Piece& piece, Vec2& loc, Vec2& offset);
+
 int main(int argc, char ** argv){
     /*ifstream input;
     input.open("pixelduck.txt");
@@ -66,8 +68,28 @@ int main(int argc, char ** argv){
             // drawer.drawPicture(topEdge, Vec2(0,0));
             window.update();
         }
+        //if the puzzel piece is clicked on
+        if(/* Puzzel.mouseClick(window.getMouseClick()) */){
+            /*
+            window knows where the mouse click was, puzzle knows where
+            all of its puzzle pieces are. We pass in the mouse click to puzzle
+            object so it can check all of its members to see if the mouse click
+            was on any of the puzzle pieces.
+            
+            */
+
+
+           //now we call the move function if this was true
+           //and we move until the window is clicked again
+        }
     }
     duckPhoto.dealloc();
     mask.dealloc();
     return 0;
+}
+
+
+bool movePiece(Piece& piece, Vec2& loc, Vc2& offset){
+    
+    
 }

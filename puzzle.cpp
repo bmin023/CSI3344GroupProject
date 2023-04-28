@@ -1,4 +1,5 @@
 #include "puzzle.h"
+#include "SDL_Plotter.h"
 
 Puzzle::Puzzle(string filename){
     this->picture = new Picture(filename);
@@ -30,4 +31,20 @@ Puzzle::Puzzle(string filename){
             }
         }
     }
+
+    
+}
+
+bool Puzzle::mouseClick(point p){
+	//return SDL_Plotter.click_queue.size() > 0;
+    //point SDL_Plotter::getMouseClick(){
+	//point p;
+    //if(click_queue.size() > 0){
+    	//p = click_queue.front();
+    	//click_queue.pop();
+    //}
+
+	//return p;
+    SDL_Plotter.getMouseClick();
+
 }
