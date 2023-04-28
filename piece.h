@@ -26,9 +26,13 @@ class Piece{
     Vec2 pos;
 
     public:
+    int thing = rand() % 100;
+    void setPos(const Vec2 &newPos);
+    Vec2 getPos() const;
     bool isClicked(point p);
     Piece(Picture& image, Vec2 imagePos, Vec2 pos);
     void draw(Drawer& drawer);
+    void draw(Drawer& drawer, Picture& pic);
     void setEdge(Orientation orient, Edge edge) {
         switch(orient) {
             case NORMAL:
