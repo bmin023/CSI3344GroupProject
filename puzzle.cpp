@@ -4,8 +4,12 @@
 
 Puzzle::Puzzle(string filename) {
     this->picture = new Picture(filename);
+    cout << "picture width: " << picture->getWidth() << endl;
+    cout << "picture height: " << picture->getHeight() << endl;
     this->numAcross = picture->getWidth() / 96;
     this->numDown = picture->getHeight() / 96;
+    cout << "numAcross: " << numAcross << endl;
+    cout << "numDown: " << numDown << endl;
 
     this->pieceTable = new Piece **[numDown];
     for (int i = 0; i < numDown; i++) {
@@ -61,14 +65,13 @@ Puzzle::Puzzle(string filename) {
 }
 
 Puzzle::~Puzzle() {
-    for (int i = 0; i < picture->getHeight() / 96; i++) {
-        for (int j = 0; j < picture->getWidth() / 96; j++) {
+    for (int i = 0; i < numDown; i++) {
+        for (int j = 0; j < numAcross; j++) {
             delete pieceTable[i][j];
         }
         delete[] pieceTable[i];
     }
     delete[] pieceTable;
-    picture->dealloc();
     delete picture;
 }
 

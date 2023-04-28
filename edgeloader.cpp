@@ -36,7 +36,6 @@ EdgeLoader::EdgeLoader() {
 
 EdgeLoader::~EdgeLoader() {
     for (int i = 0; i < numEdges; i++) {
-        edges[i]->dealloc();
         delete edges[i];
     }
     delete[] edges;
