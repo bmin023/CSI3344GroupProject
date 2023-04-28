@@ -19,6 +19,7 @@ color Edge::getPixel(int x, int y) {
         } else {
             col = color(255, 255, 255);
         }
+        return col;
     } else {
         int abs = (x - height / 2);
         if (abs < 0) {
@@ -57,6 +58,7 @@ Edge::Edge() : Picture() {
     width = 128;
     height = 32;
     picData = nullptr;
+    inverted = false;
 }
 
 Piece::Piece(Picture &image, Vec2 imagePos, Vec2 pos)
