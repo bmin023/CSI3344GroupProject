@@ -30,8 +30,8 @@
 *.exe
 *.out
 *.app
-
-**/.DS_STORE
-
 .vscode/
 .cmake/
+.cmake-build-debug
+.idea/
+**/.DS_STORE
