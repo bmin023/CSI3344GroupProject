@@ -10,46 +10,51 @@
 
 using namespace std;
 
-bool movePiece(Piece& piece, Vec2& loc, Vec2& offset);
+void movePiece(Piece& piece, point p, Drawer& drawer);
 
 int main(int argc, char ** argv){
     string colorPNG = "./picturetxts/colors.jpg.txt";
-    Piece* selectedPiece;
+    Piece* selectedPiece = nullptr;
     SDL_Plotter window (1000, 1000, true);
     Drawer drawer = Drawer(window);
     Puzzle puzzle = Puzzle(colorPNG);
+    point offset;
 
     while(!window.getQuit()){
+        if(selectedPiece != nullptr){
+            // cout << selectedPiece->thing << endl;
+            point p;
+            window.getMouseLocation(p.x, p.y);
+            p.x -= offset.x;
+            p.y -= offset.y;
+            movePiece(*selectedPiece, p, drawer);
+        }
+        puzzle.draw(drawer);
         if(window.mouseClick()){
-            puzzle.draw(drawer);
-            window.update();
-            //check for mouse click on puzzle
-            if(puzzle.mouseClick(window.getMouseClick(), selectedPiece)){
+            cout << "mouse click" << endl;
+            point click = window.getMouseClick();
+            if(selectedPiece != nullptr) {
+                selectedPiece = nullptr;
+            } else if(puzzle.mouseClick(click, &selectedPiece)){
+                cout << "piece clicked on" << endl;
+                offset.x = click.x - selectedPiece->getPos().x;
+                offset.y = click.y - selectedPiece->getPos().y;
                 //verifying cout statement for mouse click
-                cout << "selectedPiece: " << &selectedPiece << endl;
-                
+            } //check for mouse click on puzzle
+            while(window.mouseClick()){
+                window.getMouseClick();
             }
         }
-        //if the puzzel piece is clicked on
-        // if(/* Puzzel.mouseClick(window.getMouseClick()) */){
-        //     /*
-        //     window knows where the mouse click was, puzzle knows where
-        //     all of its puzzle pieces are. We pass in the mouse click to puzzle
-        //     object so it can check all of its members to see if the mouse click
-        //     was on any of the puzzle pieces.
-        //     
-        //     */
-        //
-        //
-        //    //now we call the move function if this was true
-        //    //and we move until the window is clicked again
-        // }
+        window.update();
     }
     return 0;
 }
 
 
- //bool movePiece(Piece& piece, Vec2& loc, Vc2& offset){
-     
-     
- //}
+void movePiece(Piece& selectedPiece, point p, Drawer& drawer){
+    int x = p.x, y = p.y;
+    Vec2 newPos(x,y);
+    Background bg = Background();
+    selectedPiece.draw(drawer, bg);
+    selectedPiece.setPos(newPos);
+}

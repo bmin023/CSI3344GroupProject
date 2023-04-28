@@ -56,4 +56,18 @@ class Drawer {
         void leftOrientationMask(Picture &pic, Picture &mask, Vec2 maskStart,
                                  Vec2 pos, Orientation orient = NORMAL);
 };
+
+class Background : public Picture {
+    public:
+        Background() {
+            width = 0;
+            height = 0;
+            picData = nullptr;
+            owner = false;
+        }
+        ~Background() { owner = false; }
+        color getPixel(int x, int y) override {
+            return color(255,255,255);
+        };
+};
 #endif // PICTURE_H_INCLUDED
