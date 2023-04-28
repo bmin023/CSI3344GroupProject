@@ -5,6 +5,7 @@
 #include "picture.h"
 #include "piece.h"
 #include "vec2.h"
+#include <string>
 
 using namespace std;
 
@@ -19,9 +20,13 @@ int main(int argc, char ** argv){
     input >> r;
     input >> c;
     cout << "r: " << r << " c: " << c << endl;*/
-    Picture duckPhoto = Picture("colors.jpg.txt");
-    Picture mask = Picture("sidebump.png.txt");
-    Picture othermask = Picture("Bumpy.png.txt");
+    string colorPNG = "./picturetxts/colors.jpg.txt";
+    string sideBumpPNG = "./picturetxts/sidebump.png.txt";
+    string dogPNG = "./picturetxts/dog.png.txt";
+
+    Picture duckPhoto = Picture(colorPNG);
+    Picture mask = Picture(sideBumpPNG);
+    Picture othermask = Picture(dogPNG);
     SDL_Plotter window (1000, 1000, true);
     cout << "window created" << endl;
     Drawer drawer = Drawer(window);
