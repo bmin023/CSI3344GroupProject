@@ -26,7 +26,7 @@ class Picture {
 };
 
 enum Orientation { NORMAL, RIGHT, FLIPPED, LEFT };
-
+static Vec2 orientations[4] = { Vec2(0, -1), Vec2(1, 0), Vec2(0, 1), Vec2(-1, 0) };
 class Drawer {
     public:
         Drawer(SDL_Plotter &g) : g(g) {};

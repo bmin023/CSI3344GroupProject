@@ -11,6 +11,7 @@
 using namespace std;
 
 void movePiece(Piece& piece, point p, Drawer& drawer);
+void testSnappable(Piece& piece, Drawer& drawer);
 
 int main(int argc, char ** argv){
     string colorPNG = "./picturetxts/colors.jpg.txt";
@@ -31,12 +32,13 @@ int main(int argc, char ** argv){
         }
         puzzle.draw(drawer);
         if(window.mouseClick()){
-            cout << "mouse click" << endl;
+            // cout << "mouse click" << endl;
             point click = window.getMouseClick();
             if(selectedPiece != nullptr) {
+                testSnappable(*selectedPiece, drawer);
                 selectedPiece = nullptr;
             } else if(puzzle.mouseClick(click, &selectedPiece)){
-                cout << "piece clicked on" << endl;
+                // cout << "piece clicked on" << endl;
                 offset.x = click.x - selectedPiece->getPos().x;
                 offset.y = click.y - selectedPiece->getPos().y;
                 //verifying cout statement for mouse click
@@ -48,6 +50,41 @@ int main(int argc, char ** argv){
         window.update();
     }
     return 0;
+}
+
+void testSnappable(Piece& piece, Drawer& drawer) {
+    cout << " -- test -- " << endl;
+    cout << "NORMAL";
+    if(piece.isSnappable(NORMAL)) {
+        cout << " was GOOD" << endl;
+        movePiece(piece,piece.snap(NORMAL).toPoint(),drawer);
+    }
+    else{
+        cout << " was BAD" << endl;
+    }
+    cout << "RIGHT";
+    if(piece.isSnappable(RIGHT)) {
+        cout << " was GOOD" << endl;
+        movePiece(piece,piece.snap(RIGHT).toPoint(),drawer);
+    }else{
+        cout << " was BAD" << endl;
+    }
+    cout << "FLIPPED";
+    if(piece.isSnappable(FLIPPED)) {
+        cout << " was GOOD" << endl;
+        piece.snap(FLIPPED);
+        movePiece(piece,piece.snap(FLIPPED).toPoint(),drawer);
+    }else{
+        cout << " was BAD" << endl;
+    }
+    cout << "LEFT";
+    if(piece.isSnappable(LEFT)) {
+        cout << " was GOOD" << endl;
+        movePiece(piece,piece.snap(LEFT).toPoint(),drawer);
+    }else{
+        cout << " was BAD" << endl;
+    }
+    cout << " -- end test -- " << endl << endl;
 }
 
 

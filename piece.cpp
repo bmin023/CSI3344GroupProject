@@ -129,3 +129,25 @@ void Piece::setPos(const Vec2 &newPos){
 Vec2 Piece::getPos() const {
     return pos;
 }
+
+bool Piece::isSnappable(Orientation orient) {
+    if(neighborArr[orient] == nullptr){
+        return false;
+    }
+    Vec2 neighborPos = neighborArr[orient]->getPos();
+    // cout << "sqmag " << (neighborPos - pos).sqMagnitude() << endl;
+    if((neighborPos - pos).sqMagnitude() < 12000){
+        // cout << "dot " << (neighborPos - pos).dot(orientations[orient]) << endl;
+        if((neighborPos - pos).dot(orientations[orient]) > 0.3){
+            return true;
+        }
+    }
+    return false;
+}
+
+Vec2 Piece::snap(Orientation orient) {
+    Piece* neighbor = neighborArr[orient];
+    Vec2 neighborPos = neighbor->getPos();
+    Vec2 newPos = neighborPos - orientations[orient] * 96;
+    return newPos;
+}
