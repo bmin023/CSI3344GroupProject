@@ -44,9 +44,20 @@ color Edge::getPixel(int x, int y) {
             col = color(0, 255, 0);
             return col;
         }
+        if(y + x == height - 1) {
+            col = color(0, 0, 255);
+            return col;
+        }
+        if(y - x == width - height) {
+            col = color(0, 0, 255);
+            return col;
+        }
         if (inverted) {
-            x = height - x - 1;
-            y = width - y - 1;
+            x = height - x;
+            y = width - y;
+            if(x >= height || x+y == width) {
+                return color(0, 0, 0);
+            }
         }
         col = picData[x][y];
     }

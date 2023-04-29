@@ -22,8 +22,8 @@ Puzzle::Puzzle(string filename) {
 
     for (int i = 0; i < numDown; i++) {
         for (int j = 0; j < numAcross; j++) {
-            imgOffStart = Vec2(16 + j * 96, 16 + i * 96);
-            posOnScreen = Vec2(j * 121, i * 121);
+            imgOffStart = Vec2(j * 96,i * 96);
+            posOnScreen = Vec2(j * 116, i * 116);
             pieceTable[i][j] = new Piece(*picture, imgOffStart, posOnScreen);
             bool flip = false;
             Picture *edge = edgeLoader.getRandomEdge(flip);
