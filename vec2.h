@@ -50,6 +50,10 @@ struct Vec2 {
     os << "(" << v.x << ", " << v.y << ")";
     return os;
   }
+  static Vec2 fromPoint(point p) { return Vec2(p.x, p.y); }
+  point toPoint() { return {static_cast<int>(x), static_cast<int>(y)}; }
+  float sqMagnitude() { return x * x + y * y; }
+  float dot(Vec2 other) { return x * other.x + y * other.y; }
 };
 
 const Vec2 L = Vec2(-1,0);

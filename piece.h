@@ -26,6 +26,8 @@ class Piece{
     Vec2 pos;
 
     public:
+    bool isSnappable(Orientation orient);
+    Vec2 snap(Orientation orient);
     int thing = rand() % 100;
     void setPos(const Vec2 &newPos);
     Vec2 getPos() const;
