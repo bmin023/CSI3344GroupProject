@@ -5,6 +5,7 @@
 #include "picture.h"
 #include "piece.h"
 #include "puzzle.h"
+#include "Typer.h"
 #include "vec2.h"
 #include <string>
 
@@ -14,14 +15,35 @@ void movePiece(Piece& piece, point p, Drawer& drawer);
 void testSnappable(Piece& piece, Drawer& drawer);
 
 int main(int argc, char ** argv){
+    enum gameState
+    {
+        TITLE,
+        PLAY,
+        WIN,
+    };
+    gameState state = TITLE;
+
     string colorPNG = "./picturetxts/colors.jpg.txt";
     Piece* selectedPiece = nullptr;
     SDL_Plotter window (1000, 1000, true);
     Drawer drawer = Drawer(window);
     Puzzle puzzle = Puzzle(colorPNG);
     point offset;
+    Typer t;
 
     while(!window.getQuit()){
+        while(state == TITLE && !window.getQuit()){
+            t.Write("EPIC PUZZLE GAME", window, Vec2(100, 160), color(0,0,0), 5, false);
+            t.Write("Djisktras Disciples", window, Vec2(100, 220), color(0,0,0), 3, false);
+            t.Write("Click to begin", window, Vec2(100, 300), color(255,0,0), 7, false);
+            if (window.mouseClick()){
+                state = PLAY;  //if space is hit, game is in PLAY state
+                t.Write("EPIC PUZZLE GAME", window, Vec2(100, 160), color(255,255,255), 5, false); 
+                t.Write("Djisktras Disciples", window, Vec2(100, 220), color(255,255,255), 3, false);     
+                t.Write("Click to begin", window, Vec2(100, 300), color(255,255,255), 7, false);      
+            }
+            window.update();
+        }
         if(selectedPiece != nullptr){
             // cout << selectedPiece->thing << endl;
             point p;
