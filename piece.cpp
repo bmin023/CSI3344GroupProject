@@ -162,3 +162,40 @@ Vec2 Piece::snap(Orientation orient) {
     Vec2 newPos = neighborPos - orientations[orient] * 96;
     return newPos;
 }
+
+void Piece::connect(Orientation orient) {
+    setConnected(orient, true);
+    neighborArr[orient]->setConnected(Orientation((orient + 2) % 4), true);
+}
+
+void Piece::setConnected(Orientation orient, bool connected) {
+    this->connected[orient] = connected;
+}
+
+void Piece::move(Vec2 newPos, Drawer& drawer, Picture& bg) {
+    if(moved){
+        return;
+    }
+    Vec2 dir = newPos - pos;
+    moved = true;
+    draw(drawer, bg);
+    pos = newPos;
+    for(int i = 0; i < 4; i++){
+        if(neighborArr[i] != nullptr && connected[i]){
+            neighborArr[i]->move(neighborArr[i]->getPos() + dir, drawer, bg);
+        }
+    }
+}
+
+void Piece::setMoved(bool moved) {
+    bool old = this->moved;
+    this->moved = moved;
+    if(old && !moved){
+        for(int i = 0; i < 4; i++){
+            if(neighborArr[i] != nullptr && connected[i]){
+                neighborArr[i]->setMoved(false);
+            }
+        }
+    }
+}
+

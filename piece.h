@@ -18,16 +18,22 @@ class Edge : public Picture {
 
 class Piece{
     private:
+    bool moved = false;
     Picture& image;
     Vec2 imagePos;
     Piece* neighborArr [4] = {nullptr, nullptr, nullptr, nullptr}; //neighbor array
+    bool connected [4] = {false, false, false, false}; //connected array
     Orientation orientation;
     Edge topEdge, bottomEdge, lEdge, rEdge;
     Vec2 pos;
 
     public:
+    void connect(Orientation orient);
+    void setMoved(bool moved);
     bool isSnappable(Orientation orient);
+    void setConnected(Orientation orient, bool connected);
     Vec2 snap(Orientation orient);
+    void move(Vec2 newPos, Drawer& drawer, Picture& bg);
     int thing = rand() % 100;
     void setPos(const Vec2 &newPos);
     Vec2 getPos() const;
