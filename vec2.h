@@ -55,6 +55,8 @@ struct Vec2 {
   point toPoint() { return {static_cast<int>(x), static_cast<int>(y)}; }
   float sqMagnitude() { return x * x + y * y; }
   float dot(Vec2 other) { return x * other.x + y * other.y; }
+  float magnitude() { return sqrt(sqMagnitude()); }
+  Vec2 normalized() { return *this / magnitude(); }
 };
 
 const Vec2 L = Vec2(-1,0);

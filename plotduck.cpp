@@ -12,7 +12,7 @@
 using namespace std;
 
 void movePiece(Piece &piece, point p, Drawer &drawer);
-void testSnappable(Piece &piece, Drawer &drawer);
+bool testSnappable(Piece &piece, Drawer &drawer);
 
 int main(int argc, char **argv) {
     enum gameState {
@@ -27,9 +27,11 @@ int main(int argc, char **argv) {
     SDL_Plotter window(1000, 1000, true);
     Drawer drawer = Drawer(window);
     Puzzle puzzle = Puzzle(colorPNG);
-    cout << "onto the next thing."<< endl;
+    cout << "onto the next thing." << endl;
     point offset;
     Typer t;
+
+    window.initSound("Click.wav");
 
     while (!window.getQuit()) {
         while (state == TITLE && !window.getQuit()) {
@@ -51,6 +53,9 @@ int main(int argc, char **argv) {
             window.update();
         }
         puzzle = Puzzle(colorPNG);
+        if (window.mouseClick()) {
+            window.getMouseClick();
+        }
         while (state != TITLE && !window.getQuit()) {
             if (selectedPiece != nullptr) {
                 // cout << selectedPiece->thing << endl;
@@ -64,9 +69,14 @@ int main(int argc, char **argv) {
                 // cout << "mouse click" << endl;
                 point click = window.getMouseClick();
                 if (selectedPiece != nullptr) {
-                    testSnappable(*selectedPiece, drawer);
-                    if(selectedPiece->getConnected() == puzzle.pieces()){
+                    if (testSnappable(*selectedPiece, drawer)) {
+                        window.playSound("Click.wav");
+                    }
+                    if (selectedPiece->getConnected() == puzzle.pieces()) {
                         state = WIN;
+                        if (window.kbhit()) {
+                            window.getKey();
+                        }
                     }
                     selectedPiece = nullptr;
                 } else if (puzzle.mouseClick(click, &selectedPiece)) {
@@ -81,15 +91,18 @@ int main(int argc, char **argv) {
             }
             puzzle.draw(drawer);
 
-            if(state == WIN) {
-                t.Write("You won", window, Vec2(100, 160), color(0, 0, 0), 10, false);
-                t.Write("press any key to play again", window, Vec2(100, 300), color(255, 0, 0),
-                    7, false);
+            if (state == WIN) {
+                t.Write("You won", window, Vec2(100, 160), color(0, 0, 0), 10,
+                        false);
+                t.Write("press any key to play again", window, Vec2(100, 300),
+                        color(255, 0, 0), 7, false);
                 if (window.kbhit()) {
                     state = TITLE; // if space is hit, game is in PLAY state
                     window.clear();
-                    //t.Write("You won", window, Vec2(100, 160), color(255, 255, 255), 10, false);
-                    //t.Write("press any key to play again", window, Vec2(100, 300), color(255, 255, 255),7, false);
+                    // t.Write("You won", window, Vec2(100, 160), color(255,
+                    // 255, 255), 10, false); t.Write("press any key to play
+                    // again", window, Vec2(100, 300), color(255, 255, 255),7,
+                    // false);
                 }
             }
 
@@ -99,7 +112,8 @@ int main(int argc, char **argv) {
     return 0;
 }
 
-void testSnappable(Piece &piece, Drawer &drawer) {
+bool testSnappable(Piece &piece, Drawer &drawer) {
+    int pieceNum = piece.getConnected();
     // cout << " -- test -- " << endl;
     // cout << "NORMAL";
     if (piece.isSnappable(NORMAL)) {
@@ -135,6 +149,7 @@ void testSnappable(Piece &piece, Drawer &drawer) {
     }
     // cout << " -- end test -- " << endl << endl;
     cout << piece.getConnected() << endl;
+    return piece.getConnected() > pieceNum;
 }
 
 void movePiece(Piece &selectedPiece, point p, Drawer &drawer) {
