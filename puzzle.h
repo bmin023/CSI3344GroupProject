@@ -14,11 +14,11 @@ class Puzzle{
         int numAcross;
         int numDown;
      public:
-        Puzzle(string filename);
+        Puzzle(string filename, int maxHeight = 1000, int maxWidth = 1000);
         ~Puzzle();
         void draw(Drawer &drawer);
         //window.mouseClick()
         bool mouseClick(point p, Piece** selectedPiece);
-        int pieces() const {return numAcross * numDown;}
+        int pieces() {return numAcross * numDown;}
 };
 #endif //PUZZLE_H_INCLUDED

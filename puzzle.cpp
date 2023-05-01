@@ -2,7 +2,7 @@
 #include "SDL_Plotter.h"
 #include "picture.h"
 
-Puzzle::Puzzle(string filename) {
+Puzzle::Puzzle(string filename, int maxHeight, int maxWidth) {
     this->picture = new Picture(filename);
     cout << "picture width: " << picture->getWidth() << endl;
     cout << "picture height: " << picture->getHeight() << endl;
@@ -19,11 +19,12 @@ Puzzle::Puzzle(string filename) {
     Vec2 imgOffStart = Vec2(0, 0); // remember it is (y, x)! (Only for accessing
                                    // the picture. Piece coordinates are (x, y))
     Vec2 posOnScreen = Vec2(20, 20);
+    srand(time(NULL));
 
     for (int i = 0; i < numDown; i++) {
         for (int j = 0; j < numAcross; j++) {
             imgOffStart = Vec2(j * 96,i * 96);
-            posOnScreen = Vec2(j * 116, i * 116);
+            posOnScreen = Vec2(rand() % (maxWidth - 256), rand() % (maxHeight - 256));
             pieceTable[i][j] = new Piece(*picture, imgOffStart, posOnScreen);
             bool flip = false;
             Picture *edge = edgeLoader.getRandomEdge(flip);
