@@ -2,6 +2,7 @@
 #define vec2_h
 
 #include <iostream>
+#include "SDL_Plotter.h"
 
 struct iVec2 {
   int x, y;

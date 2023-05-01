@@ -18,6 +18,9 @@ class Picture {
             height = 0;
             picData = nullptr;
         };
+        Picture(const Picture& other);
+        Picture& operator=(const Picture& other);
+
         virtual ~Picture();
         Vec2 dim();
         virtual color getPixel(int x, int y);

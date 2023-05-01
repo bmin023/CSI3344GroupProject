@@ -12,22 +12,46 @@ class Edge : public Picture {
         Edge(Picture &pic, bool inverted = false);
         Edge();
         ~Edge() override;
-        Edge operator=(const Edge &other);
+        Edge& operator=(const Edge &other);
         color getPixel(int x, int y) override;
 };
 
 class Piece{
     private:
+    bool moved = false;
     Picture& image;
     Vec2 imagePos;
     Piece* neighborArr [4] = {nullptr, nullptr, nullptr, nullptr}; //neighbor array
+    bool connected [4] = {false, false, false, false}; //connected array
     Orientation orientation;
     Edge topEdge, bottomEdge, lEdge, rEdge;
     Vec2 pos;
+    int ping(int count);
 
     public:
+    Piece(const Piece &other) : pos(other.pos), imagePos(other.imagePos), image(other.image) {
+        cout << "copy constructor" << endl;
+        moved = other.moved;
+        for(int i = 0; i< 4; i++) {
+            neighborArr[i] = other.neighborArr[i];
+            connected[i] = other.connected[i];
+        }
+        orientation = other.orientation;
+        cout << "I am at the edges." << endl;
+        topEdge = other.topEdge;
+        cout << "first edge" << endl;
+        bottomEdge = other.bottomEdge;
+        lEdge = other.lEdge;
+        rEdge = other.rEdge;
+        cout << "done" << endl;
+    }
+    int getConnected();
+    void connect(Orientation orient);
+    void setMoved(bool moved);
     bool isSnappable(Orientation orient);
+    void setConnected(Orientation orient, bool connected);
     Vec2 snap(Orientation orient);
+    void move(Vec2 newPos, Drawer& drawer, Picture& bg);
     int thing = rand() % 100;
     void setPos(const Vec2 &newPos);
     Vec2 getPos() const;
