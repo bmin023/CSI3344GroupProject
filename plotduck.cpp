@@ -49,32 +49,41 @@ int main(int argc, char **argv) {
             }
             window.update();
         }
-        if (selectedPiece != nullptr) {
-            // cout << selectedPiece->thing << endl;
-            point p;
-            window.getMouseLocation(p.x, p.y);
-            p.x -= offset.x;
-            p.y -= offset.y;
-            movePiece(*selectedPiece, p, drawer);
-        }
-        puzzle.draw(drawer);
-        if (window.mouseClick()) {
-            // cout << "mouse click" << endl;
-            point click = window.getMouseClick();
+        while (state != TITLE && !window.getQuit()) {
             if (selectedPiece != nullptr) {
-                testSnappable(*selectedPiece, drawer);
-                selectedPiece = nullptr;
-            } else if (puzzle.mouseClick(click, &selectedPiece)) {
-                // cout << "piece clicked on" << endl;
-                offset.x = click.x - selectedPiece->getPos().x;
-                offset.y = click.y - selectedPiece->getPos().y;
-                // verifying cout statement for mouse click
-            } // check for mouse click on puzzle
-            while (window.mouseClick()) {
-                window.getMouseClick();
+                // cout << selectedPiece->thing << endl;
+                point p;
+                window.getMouseLocation(p.x, p.y);
+                p.x -= offset.x;
+                p.y -= offset.y;
+                movePiece(*selectedPiece, p, drawer);
             }
+            if (window.mouseClick()) {
+                // cout << "mouse click" << endl;
+                point click = window.getMouseClick();
+                if (selectedPiece != nullptr) {
+                    testSnappable(*selectedPiece, drawer);
+                    if(selectedPiece->getConnected() == puzzle.pieces()){
+                        state = WIN;
+                    }
+                    selectedPiece = nullptr;
+                } else if (puzzle.mouseClick(click, &selectedPiece)) {
+                    // cout << "piece clicked on" << endl;
+                    offset.x = click.x - selectedPiece->getPos().x;
+                    offset.y = click.y - selectedPiece->getPos().y;
+                    // verifying cout statement for mouse click
+                } // check for mouse click on puzzle
+                while (window.mouseClick()) {
+                    window.getMouseClick();
+                }
+            }
+            if(state == WIN) {
+                
+            }
+            
+            puzzle.draw(drawer);
+            window.update();
         }
-        window.update();
     }
     return 0;
 }
@@ -82,11 +91,9 @@ int main(int argc, char **argv) {
 void testSnappable(Piece &piece, Drawer &drawer) {
     // cout << " -- test -- " << endl;
     // cout << "NORMAL";
-    int moved = false;
     if (piece.isSnappable(NORMAL)) {
         // cout << " was GOOD" << endl;
         movePiece(piece, piece.snap(NORMAL).toPoint(), drawer);
-        moved = true;
         piece.connect(NORMAL);
     } else {
         // cout << " was BAD" << endl;
@@ -94,10 +101,7 @@ void testSnappable(Piece &piece, Drawer &drawer) {
     // cout << "RIGHT";
     if (piece.isSnappable(RIGHT)) {
         // cout << " was GOOD" << endl;
-        if (!moved) {
-            movePiece(piece, piece.snap(RIGHT).toPoint(), drawer);
-            moved = true;
-        }
+        movePiece(piece, piece.snap(RIGHT).toPoint(), drawer);
         piece.connect(RIGHT);
     } else {
         // cout << " was BAD" << endl;
@@ -105,10 +109,7 @@ void testSnappable(Piece &piece, Drawer &drawer) {
     // cout << "FLIPPED";
     if (piece.isSnappable(FLIPPED)) {
         // cout << " was GOOD" << endl;
-        if (!moved) {
-            movePiece(piece, piece.snap(FLIPPED).toPoint(), drawer);
-            moved = true;
-        }
+        movePiece(piece, piece.snap(FLIPPED).toPoint(), drawer);
         piece.connect(FLIPPED);
     } else {
         // cout << " was BAD" << endl;
@@ -116,10 +117,7 @@ void testSnappable(Piece &piece, Drawer &drawer) {
     // cout << "LEFT";
     if (piece.isSnappable(LEFT)) {
         // cout << " was GOOD" << endl;
-        if (!moved) {
-            movePiece(piece, piece.snap(LEFT).toPoint(), drawer);
-            moved = true;
-        }
+        movePiece(piece, piece.snap(LEFT).toPoint(), drawer);
         piece.connect(LEFT);
     } else {
         // cout << " was BAD" << endl;

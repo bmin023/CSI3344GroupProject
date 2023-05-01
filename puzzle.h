@@ -19,6 +19,6 @@ class Puzzle{
         void draw(Drawer &drawer);
         //window.mouseClick()
         bool mouseClick(point p, Piece** selectedPiece);
-
+        int pieces() const {return numAcross * numDown;}
 };
 #endif //PUZZLE_H_INCLUDED
