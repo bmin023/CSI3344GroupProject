@@ -86,13 +86,13 @@ Edge::Edge() : Picture() {
     inverted = false;
 }
 
-Piece::Piece(Picture &image, Vec2 imagePos, Vec2 pos)
+Piece::Piece(Picture *image, Vec2 imagePos, Vec2 pos)
     : image(image), imagePos(imagePos), pos(pos), topEdge(), bottomEdge(),
       lEdge(), rEdge() {
     orientation = NORMAL;
 }
 
-void Piece::draw(Drawer &drawer) { draw(drawer, image); }
+void Piece::draw(Drawer &drawer) { draw(drawer, *image); }
 void Piece::draw(Drawer &drawer, Picture &pic) {
     Vec2 pictureDim = Vec2(128, 128);
     Vec2 edgedim = Vec2(128, 32);

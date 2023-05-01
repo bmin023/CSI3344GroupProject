@@ -41,11 +41,9 @@ Picture::Picture(const Picture &other){
     this->width = other.width;
     this->height = other.height;
     this->picData = new color *[this->height];
-    for (int i = 0; i < height; i++) {
-        picData[i] = new color[width];
-    }
 
     for (int i = 0; i < height; i++) {
+        picData[i] = new color[width];
         for (int j = 0; j < width; j++) {
             picData[i][j] = other.picData[i][j];
         }

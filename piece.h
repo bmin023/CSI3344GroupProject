@@ -19,7 +19,7 @@ class Edge : public Picture {
 class Piece{
     private:
     bool moved = false;
-    Picture& image;
+    
     Vec2 imagePos;
     Piece* neighborArr [4] = {nullptr, nullptr, nullptr, nullptr}; //neighbor array
     bool connected [4] = {false, false, false, false}; //connected array
@@ -29,21 +29,18 @@ class Piece{
     int ping(int count);
 
     public:
+    Picture* image;
     Piece(const Piece &other) : pos(other.pos), imagePos(other.imagePos), image(other.image) {
-        cout << "copy constructor" << endl;
         moved = other.moved;
         for(int i = 0; i< 4; i++) {
             neighborArr[i] = other.neighborArr[i];
             connected[i] = other.connected[i];
         }
         orientation = other.orientation;
-        cout << "I am at the edges." << endl;
         topEdge = other.topEdge;
-        cout << "first edge" << endl;
         bottomEdge = other.bottomEdge;
         lEdge = other.lEdge;
         rEdge = other.rEdge;
-        cout << "done" << endl;
     }
     int getConnected();
     void connect(Orientation orient);
@@ -56,7 +53,7 @@ class Piece{
     void setPos(const Vec2 &newPos);
     Vec2 getPos() const;
     bool isClicked(point p);
-    Piece(Picture& image, Vec2 imagePos, Vec2 pos);
+    Piece(Picture *image, Vec2 imagePos, Vec2 pos);
     void draw(Drawer& drawer);
     void draw(Drawer& drawer, Picture& pic);
     void setEdge(Orientation orient, Edge edge) {

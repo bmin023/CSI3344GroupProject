@@ -25,7 +25,7 @@ Puzzle::Puzzle(string filename, int maxHeight, int maxWidth) {
         for (int j = 0; j < numAcross; j++) {
             imgOffStart = Vec2(j * 96, i * 96);
             posOnScreen = Vec2(rand() % (maxWidth - 256), rand() % (maxHeight - 256));
-            pieceTable[i][j] = new Piece(picture, imgOffStart, posOnScreen);
+            pieceTable[i][j] = new Piece(&picture, imgOffStart, posOnScreen);
             bool flip = false;
             Picture *edge = edgeLoader.getRandomEdge(flip);
             Edge norm = Edge(*edge, flip);
@@ -59,7 +59,6 @@ Puzzle::Puzzle(string filename, int maxHeight, int maxWidth) {
             }
         }
     }
-    cout << "I am here" << endl;
 }
 
 Puzzle::Puzzle(const Puzzle &other) {
@@ -93,9 +92,49 @@ Puzzle::Puzzle(const Puzzle &other) {
     }
 }
 
+Puzzle::Puzzle(Puzzle&& other) {
+    picture = other.picture;
+    pieceTable = other.pieceTable;
+    other.pieceTable = nullptr;
+    numAcross = other.numAcross;
+    other.numAcross = 0;
+    numDown = other.numDown;
+    other.numDown = 0;
+    edgeLoader = other.edgeLoader;
+}
+
+Puzzle& Puzzle::operator=(Puzzle &&other) {
+    if(this != &other) {
+        if(pieceTable != nullptr) {
+            for (int i = 0; i < numDown; i++) {
+                for (int j = 0; j < numAcross; j++) {
+                    delete pieceTable[i][j];
+                }
+                delete[] pieceTable[i];
+            }
+            delete[] pieceTable;
+        }
+        picture = std::move(other.picture);
+        pieceTable = other.pieceTable;
+        other.pieceTable = nullptr;
+        numAcross = other.numAcross;
+        other.numAcross = 0;
+        numDown = other.numDown;
+        other.numDown = 0;
+        edgeLoader = std::move(other.edgeLoader);
+        picture.report();
+        edgeLoader.report();
+        for(int i = 0; i < numDown; i++) {
+            for(int j = 0; j < numAcross; j++) {
+                pieceTable[i][j]->image = &picture;
+            }
+        }
+    }
+    return *this;
+}
+
 Puzzle &Puzzle::operator=(const Puzzle &other) {
     if (this != &other) {
-        cout << "equals" << endl;
         this->numAcross = other.numAcross;
         this->numDown = other.numDown;
         this->picture = other.picture;
@@ -104,9 +143,6 @@ Puzzle &Puzzle::operator=(const Puzzle &other) {
         for (int i = 0; i < numDown; i++) {
             pieceTable[i] = new Piece *[numAcross];
             for (int j = 0; j < numAcross; j++) {
-                cout << "Piece " << i << " " << j << " = "
-                     << other.pieceTable[i][j] << endl;
-                cout << other.pieceTable[i][j]->getPos() << endl;
                 pieceTable[i][j] = new Piece(*other.pieceTable[i][j]);
                 if (j > 0) {
                     pieceTable[i][j]->setNeighbor(

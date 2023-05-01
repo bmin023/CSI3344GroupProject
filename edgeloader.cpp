@@ -24,7 +24,7 @@ EdgeLoader::EdgeLoader() {
     // closedir(dir);
     // cout << "Loaded " << numEdges << " edges." << endl;
     numEdges = 10;
-    edges = new Picture *[numEdges];
+    edges = new Picture*[numEdges];
     edges[0] = new Picture("./pictureTXTs/edges/sidebump.png.txt");
     edges[1] = new Picture("./pictureTXTs/edges/Bumpy.png.txt");
     edges[2] = new Picture("./pictureTXTs/edges/biggump.png.txt");
@@ -37,9 +37,33 @@ EdgeLoader::EdgeLoader() {
     edges[9] = new Picture("./pictureTXTs/edges/Claudia.png.txt");
 }
 
+EdgeLoader::EdgeLoader(const EdgeLoader& other) {
+    numEdges = other.numEdges;
+    edges = new Picture*[numEdges];
+    for(int i = 0; i < numEdges; i++) {
+        edges[i] = new Picture(*other.edges[i]);
+    }
+}
+
+EdgeLoader& EdgeLoader::operator=(const EdgeLoader& other) {
+    if(this != &other) {
+        if(edges != nullptr) {
+            for(int i = 0; i < numEdges; i++) {
+                delete edges[i];
+            }
+            delete [] edges;
+        }
+        numEdges = other.numEdges;
+        edges = new Picture*[numEdges];
+        for(int i = 0; i < numEdges; i++) {
+            edges[i] = new Picture(*other.edges[i]);
+        }
+    }
+    return *this;
+}
+
 EdgeLoader::~EdgeLoader() {
-    cout << "load delete" << endl;
-    for (int i = 0; i < numEdges; i++) {
+    for(int i = 0; i < numEdges; i++) {
         delete edges[i];
     }
     delete[] edges;

@@ -9,7 +9,7 @@
 class Puzzle{
     private: 
         Picture picture;
-        Piece*** pieceTable; //2d array of piece pointers
+        Piece*** pieceTable = nullptr; //2d array of piece pointers
         EdgeLoader edgeLoader;
         int numAcross;
         int numDown;
@@ -17,7 +17,9 @@ class Puzzle{
         Puzzle(string filename, int maxHeight = 1000, int maxWidth = 1000);
         Puzzle() {}
         Puzzle(const Puzzle& other);
+        Puzzle& operator=(Puzzle&& other);
         Puzzle& operator=(const Puzzle& other);
+        Puzzle(Puzzle&& other);
         ~Puzzle();
         void draw(Drawer &drawer);
         //window.mouseClick()

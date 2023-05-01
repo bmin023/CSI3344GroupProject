@@ -40,7 +40,6 @@ int main(int argc, char **argv) {
             t.Write("Click to begin", window, Vec2(100, 300), color(255, 0, 0),
                     7, false);
             if (window.mouseClick()) {
-                puzzle = Puzzle(colorPNG);
                 state = PLAY; // if space is hit, game is in PLAY state
                 t.Write("EPIC PUZZLE GAME", window, Vec2(100, 160),
                         color(255, 255, 255), 5, false);
@@ -51,6 +50,7 @@ int main(int argc, char **argv) {
             }
             window.update();
         }
+        puzzle = Puzzle(colorPNG);
         while (state != TITLE && !window.getQuit()) {
             if (selectedPiece != nullptr) {
                 // cout << selectedPiece->thing << endl;
