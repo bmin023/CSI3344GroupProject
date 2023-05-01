@@ -80,40 +80,52 @@ int main(int argc, char **argv) {
 }
 
 void testSnappable(Piece &piece, Drawer &drawer) {
-    cout << " -- test -- " << endl;
-    cout << "NORMAL";
+    // cout << " -- test -- " << endl;
+    // cout << "NORMAL";
+    int moved = false;
     if (piece.isSnappable(NORMAL)) {
-        cout << " was GOOD" << endl;
+        // cout << " was GOOD" << endl;
         movePiece(piece, piece.snap(NORMAL).toPoint(), drawer);
+        moved = true;
         piece.connect(NORMAL);
     } else {
-        cout << " was BAD" << endl;
+        // cout << " was BAD" << endl;
     }
-    cout << "RIGHT";
+    // cout << "RIGHT";
     if (piece.isSnappable(RIGHT)) {
-        cout << " was GOOD" << endl;
+        // cout << " was GOOD" << endl;
+        if (!moved) {
             movePiece(piece, piece.snap(RIGHT).toPoint(), drawer);
-            piece.connect(RIGHT);
+            moved = true;
+        }
+        piece.connect(RIGHT);
     } else {
-        cout << " was BAD" << endl;
+        // cout << " was BAD" << endl;
     }
-    cout << "FLIPPED";
+    // cout << "FLIPPED";
     if (piece.isSnappable(FLIPPED)) {
-        cout << " was GOOD" << endl;
+        // cout << " was GOOD" << endl;
+        if (!moved) {
             movePiece(piece, piece.snap(FLIPPED).toPoint(), drawer);
-            piece.connect(FLIPPED);
+            moved = true;
+        }
+        piece.connect(FLIPPED);
     } else {
-        cout << " was BAD" << endl;
+        // cout << " was BAD" << endl;
     }
-    cout << "LEFT";
+    // cout << "LEFT";
     if (piece.isSnappable(LEFT)) {
-        cout << " was GOOD" << endl;
+        // cout << " was GOOD" << endl;
+        if (!moved) {
             movePiece(piece, piece.snap(LEFT).toPoint(), drawer);
-            piece.connect(LEFT);
+            moved = true;
+        }
+        piece.connect(LEFT);
     } else {
-        cout << " was BAD" << endl;
+        // cout << " was BAD" << endl;
     }
-    cout << " -- end test -- " << endl << endl;
+    // cout << " -- end test -- " << endl << endl;
+    cout << piece.getConnected() << endl;
 }
 
 void movePiece(Piece &selectedPiece, point p, Drawer &drawer) {

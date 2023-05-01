@@ -26,8 +26,10 @@ class Piece{
     Orientation orientation;
     Edge topEdge, bottomEdge, lEdge, rEdge;
     Vec2 pos;
+    int ping(int count);
 
     public:
+    int getConnected();
     void connect(Orientation orient);
     void setMoved(bool moved);
     bool isSnappable(Orientation orient);
