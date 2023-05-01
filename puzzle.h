@@ -8,13 +8,16 @@
 
 class Puzzle{
     private: 
-        Picture* picture;
+        Picture picture;
         Piece*** pieceTable; //2d array of piece pointers
         EdgeLoader edgeLoader;
         int numAcross;
         int numDown;
      public:
         Puzzle(string filename);
+        Puzzle() {}
+        Puzzle(const Puzzle& other);
+        Puzzle& operator=(const Puzzle& other);
         ~Puzzle();
         void draw(Drawer &drawer);
         //window.mouseClick()

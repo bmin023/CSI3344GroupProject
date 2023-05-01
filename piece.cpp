@@ -69,11 +69,13 @@ color Edge::getPixel(int x, int y) {
     return col;
 }
 
-Edge Edge::operator=(const Edge &other) {
-    picData = other.picData;
-    width = other.width;
-    height = other.height;
-    inverted = other.inverted;
+Edge& Edge::operator=(const Edge &other) {
+    if(this != &other) {
+        picData = other.picData;
+        width = other.width;
+        height = other.height;
+        inverted = other.inverted;
+    }
     return *this;
 }
 

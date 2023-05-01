@@ -3,11 +3,11 @@
 #include "picture.h"
 
 Puzzle::Puzzle(string filename) {
-    this->picture = new Picture(filename);
-    cout << "picture width: " << picture->getWidth() << endl;
-    cout << "picture height: " << picture->getHeight() << endl;
-    this->numAcross = picture->getWidth() / 96;
-    this->numDown = picture->getHeight() / 96;
+    this->picture = Picture(filename);
+    cout << "picture width: " << picture.getWidth() << endl;
+    cout << "picture height: " << picture.getHeight() << endl;
+    this->numAcross = picture.getWidth() / 96;
+    this->numDown = picture.getHeight() / 96;
     cout << "numAcross: " << numAcross << endl;
     cout << "numDown: " << numDown << endl;
 
@@ -22,9 +22,11 @@ Puzzle::Puzzle(string filename) {
 
     for (int i = 0; i < numDown; i++) {
         for (int j = 0; j < numAcross; j++) {
-            imgOffStart = Vec2(j * 96,i * 96);
+            imgOffStart = Vec2(j * 96, i * 96);
             posOnScreen = Vec2(j * 116, i * 116);
-            pieceTable[i][j] = new Piece(*picture, imgOffStart, posOnScreen);
+            pieceTable[i][j] = new Piece(picture, imgOffStart, posOnScreen);
+            cout << "piece " << i << " " << j << " = " << pieceTable[i][j]
+                 << endl;
             bool flip = false;
             Picture *edge = edgeLoader.getRandomEdge(flip);
             Edge norm = Edge(*edge, flip);
@@ -34,34 +36,100 @@ Puzzle::Puzzle(string filename) {
                 pieceTable[i][j]->setNeighbor(
                     Orientation::LEFT,
                     pieceTable[i][j - 1]); // left neighbor assignment
-                pieceTable[i][j]->setEdge(
-                    Orientation::LEFT,
-                    norm); // left edge assignment
+                pieceTable[i][j]->setEdge(Orientation::LEFT,
+                                          norm); // left edge assignment
 
                 pieceTable[i][j - 1]->setNeighbor(
                     Orientation::RIGHT,
                     pieceTable[i][j]); // right neighbor assignment
-                pieceTable[i][j - 1]->setEdge(
-                    Orientation::RIGHT,
-                    inv); // right edge assignment
+                pieceTable[i][j - 1]->setEdge(Orientation::RIGHT,
+                                              inv); // right edge assignment
             }
 
             if (i > 0) {
                 pieceTable[i][j]->setNeighbor(
                     Orientation::NORMAL,
                     pieceTable[i - 1][j]); // top neighbor assignment
-                pieceTable[i][j]->setEdge(
-                    Orientation::NORMAL,
-                    norm); // top edge assignment
+                pieceTable[i][j]->setEdge(Orientation::NORMAL,
+                                          norm); // top edge assignment
                 pieceTable[i - 1][j]->setNeighbor(
                     Orientation::FLIPPED,
                     pieceTable[i][j]); // bottom neighbor assignment
-                pieceTable[i - 1][j]->setEdge(
-                    Orientation::FLIPPED,
-                    inv); // bottom edge assignment
+                pieceTable[i - 1][j]->setEdge(Orientation::FLIPPED,
+                                              inv); // bottom edge assignment
             }
         }
     }
+    cout << "I am here" << endl;
+}
+
+Puzzle::Puzzle(const Puzzle &other) {
+    this->numAcross = other.numAcross;
+    this->numDown = other.numDown;
+    this->picture = other.picture;
+    this->edgeLoader = other.edgeLoader;
+    pieceTable = new Piece **[numDown];
+    for (int i = 0; i < numDown; i++) {
+        pieceTable[i] = new Piece *[numAcross];
+        for (int j = 0; j < numAcross; j++) {
+            pieceTable[i][j] = new Piece(*other.pieceTable[i][j]);
+            if (j > 0) {
+                pieceTable[i][j]->setNeighbor(
+                    Orientation::LEFT,
+                    pieceTable[i][j - 1]); // left neighbor assignment
+
+                pieceTable[i][j - 1]->setNeighbor(
+                    Orientation::RIGHT,
+                    pieceTable[i][j]); // right neighbor assignment
+            }
+            if (i > 0) {
+                pieceTable[i][j]->setNeighbor(
+                    Orientation::NORMAL,
+                    pieceTable[i - 1][j]); // top neighbor assignment
+                pieceTable[i - 1][j]->setNeighbor(
+                    Orientation::FLIPPED,
+                    pieceTable[i][j]); // bottom neighbor assignment
+            }
+        }
+    }
+}
+
+Puzzle &Puzzle::operator=(const Puzzle &other) {
+    if (this != &other) {
+        cout << "equals" << endl;
+        this->numAcross = other.numAcross;
+        this->numDown = other.numDown;
+        this->picture = other.picture;
+        this->edgeLoader = other.edgeLoader;
+        pieceTable = new Piece **[numDown];
+        for (int i = 0; i < numDown; i++) {
+            pieceTable[i] = new Piece *[numAcross];
+            for (int j = 0; j < numAcross; j++) {
+                cout << "Piece " << i << " " << j << " = "
+                     << other.pieceTable[i][j] << endl;
+                cout << other.pieceTable[i][j]->getPos() << endl;
+                pieceTable[i][j] = new Piece(*other.pieceTable[i][j]);
+                if (j > 0) {
+                    pieceTable[i][j]->setNeighbor(
+                        Orientation::LEFT,
+                        pieceTable[i][j - 1]); // left neighbor assignment
+
+                    pieceTable[i][j - 1]->setNeighbor(
+                        Orientation::RIGHT,
+                        pieceTable[i][j]); // right neighbor assignment
+                }
+                if (i > 0) {
+                    pieceTable[i][j]->setNeighbor(
+                        Orientation::NORMAL,
+                        pieceTable[i - 1][j]); // top neighbor assignment
+                    pieceTable[i - 1][j]->setNeighbor(
+                        Orientation::FLIPPED,
+                        pieceTable[i][j]); // bottom neighbor assignment
+                }
+            }
+        }
+    }
+    return *this;
 }
 
 Puzzle::~Puzzle() {
@@ -72,7 +140,6 @@ Puzzle::~Puzzle() {
         delete[] pieceTable[i];
     }
     delete[] pieceTable;
-    delete picture;
 }
 
 void Puzzle::draw(Drawer &drawer) {
@@ -84,24 +151,26 @@ void Puzzle::draw(Drawer &drawer) {
 }
 
 /*
-*       TitleOfFunction: mouseClick
-*  Description:    This will check to see if the mouse has clicked on a piece
-*  return:         bool - true if a piece was clicked on, false otherwise
-*  precondition:   there are puzzles on the screen
-*  post-condition: nothing is changed after click
-*
-*/
-bool Puzzle::mouseClick(point p, Piece** selectedPiece){
+ *       TitleOfFunction: mouseClick
+ *  Description:    This will check to see if the mouse has clicked on a
+ * piece return:         bool - true if a piece was clicked on, false
+ * otherwise precondition:   there are puzzles on the screen post-condition:
+ * nothing is changed after click
+ *
+ */
+bool Puzzle::mouseClick(point p, Piece **selectedPiece) {
 
-    //this bool variable will be useful in the event we need to debug
+    // this bool variable will be useful in the event we need to debug
     bool pieceClickedOn = false;
-    //linear search below, this is fine because there will not be many pieces
-    for(int i = 0; i < numDown; i++){
-        for(int j = 0; j < numAcross; j++){
-            //call the isClicked function from piece
-            if(pieceTable[i][j]->isClicked(p)){
+    // linear search below, this is fine because there will not be many
+    // pieces
+    for (int i = 0; i < numDown; i++) {
+        for (int j = 0; j < numAcross; j++) {
+            // call the isClicked function from piece
+            if (pieceTable[i][j]->isClicked(p)) {
                 *selectedPiece = pieceTable[i][j];
-                cout << "piece at " << i << ", " << j << " was clicked on" << endl;
+                cout << "piece at " << i << ", " << j << " was clicked on"
+                     << endl;
                 pieceClickedOn = true;
                 return pieceClickedOn;
             }
@@ -109,4 +178,4 @@ bool Puzzle::mouseClick(point p, Piece** selectedPiece){
     }
 
     return pieceClickedOn;
- }
+}

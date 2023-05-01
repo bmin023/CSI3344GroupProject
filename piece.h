@@ -12,7 +12,7 @@ class Edge : public Picture {
         Edge(Picture &pic, bool inverted = false);
         Edge();
         ~Edge() override;
-        Edge operator=(const Edge &other);
+        Edge& operator=(const Edge &other);
         color getPixel(int x, int y) override;
 };
 
@@ -29,6 +29,22 @@ class Piece{
     int ping(int count);
 
     public:
+    Piece(const Piece &other) : pos(other.pos), imagePos(other.imagePos), image(other.image) {
+        cout << "copy constructor" << endl;
+        moved = other.moved;
+        for(int i = 0; i< 4; i++) {
+            neighborArr[i] = other.neighborArr[i];
+            connected[i] = other.connected[i];
+        }
+        orientation = other.orientation;
+        cout << "I am at the edges." << endl;
+        topEdge = other.topEdge;
+        cout << "first edge" << endl;
+        bottomEdge = other.bottomEdge;
+        lEdge = other.lEdge;
+        rEdge = other.rEdge;
+        cout << "done" << endl;
+    }
     int getConnected();
     void connect(Orientation orient);
     void setMoved(bool moved);

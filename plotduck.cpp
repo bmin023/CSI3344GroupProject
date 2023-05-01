@@ -27,6 +27,7 @@ int main(int argc, char **argv) {
     SDL_Plotter window(1000, 1000, true);
     Drawer drawer = Drawer(window);
     Puzzle puzzle = Puzzle(colorPNG);
+    cout << "onto the next thing."<< endl;
     point offset;
     Typer t;
 
@@ -39,6 +40,7 @@ int main(int argc, char **argv) {
             t.Write("Click to begin", window, Vec2(100, 300), color(255, 0, 0),
                     7, false);
             if (window.mouseClick()) {
+                puzzle = Puzzle(colorPNG);
                 state = PLAY; // if space is hit, game is in PLAY state
                 t.Write("EPIC PUZZLE GAME", window, Vec2(100, 160),
                         color(255, 255, 255), 5, false);
@@ -77,11 +79,20 @@ int main(int argc, char **argv) {
                     window.getMouseClick();
                 }
             }
-            if(state == WIN) {
-                
-            }
-            
             puzzle.draw(drawer);
+
+            if(state == WIN) {
+                t.Write("You won", window, Vec2(100, 160), color(0, 0, 0), 10, false);
+                t.Write("press any key to play again", window, Vec2(100, 300), color(255, 0, 0),
+                    7, false);
+                if (window.kbhit()) {
+                    state = TITLE; // if space is hit, game is in PLAY state
+                    window.clear();
+                    //t.Write("You won", window, Vec2(100, 160), color(255, 255, 255), 10, false);
+                    //t.Write("press any key to play again", window, Vec2(100, 300), color(255, 255, 255),7, false);
+                }
+            }
+
             window.update();
         }
     }
