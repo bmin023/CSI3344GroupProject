@@ -32,6 +32,7 @@ int main(int argc, char **argv) {
     Typer t;
 
     window.initSound("Click.wav");
+    window.initSound("GoodDesign.wav");
 
     while (!window.getQuit()) {
         while (state == TITLE && !window.getQuit()) {
@@ -72,8 +73,9 @@ int main(int argc, char **argv) {
                     if (testSnappable(*selectedPiece, drawer)) {
                         window.playSound("Click.wav");
                     }
-                    if (selectedPiece->getConnected() == puzzle.pieces()) {
+                    if (state == PLAY && selectedPiece->getConnected() == puzzle.pieces()) {
                         state = WIN;
+                        window.playSound("GoodDesign.wav");
                         if (window.kbhit()) {
                             window.getKey();
                         }
