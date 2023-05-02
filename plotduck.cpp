@@ -22,6 +22,7 @@ int main(int argc, char **argv) {
     };
     gameState state = TITLE;
 
+
     string colorPNG = "./picturetxts/colors.jpg.txt";
     Piece *selectedPiece = nullptr;
     SDL_Plotter window(1000, 1000, true);
@@ -33,6 +34,8 @@ int main(int argc, char **argv) {
 
     window.initSound("Click.wav");
     window.initSound("GoodDesign.wav");
+    window.initSound("NotUnderTale.wav");
+
 
     while (!window.getQuit()) {
         while (state == TITLE && !window.getQuit()) {
@@ -42,7 +45,9 @@ int main(int argc, char **argv) {
                     color(0, 0, 0), 3, false);
             t.Write("Click to begin", window, Vec2(100, 300), color(255, 0, 0),
                     7, false);
+            window.playSound("NotUnderTale.wav");
             if (window.mouseClick()) {
+                window.quitSound("NotUnderTale.wav");
                 state = PLAY; // if space is hit, game is in PLAY state
                 t.Write("EPIC PUZZLE GAME", window, Vec2(100, 160),
                         color(255, 255, 255), 5, false);
