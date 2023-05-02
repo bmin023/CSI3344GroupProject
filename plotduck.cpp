@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
     };
     gameState state = TITLE;
 
-    string colorPNG = "./picturetxts/colors.jpg.txt";
+    string colorPNG = "./picturetxts/baylor.jpg.txt";
     Piece *selectedPiece = nullptr;
     SDL_Plotter window(1000, 1000, true);
     Drawer drawer = Drawer(window);

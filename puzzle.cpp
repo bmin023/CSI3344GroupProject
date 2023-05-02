@@ -199,8 +199,8 @@ bool Puzzle::mouseClick(point p, Piece **selectedPiece) {
     bool pieceClickedOn = false;
     // linear search below, this is fine because there will not be many
     // pieces
-    for (int i = 0; i < numDown; i++) {
-        for (int j = 0; j < numAcross; j++) {
+    for (int i = numDown - 1; i >= 0; i--) {
+        for (int j = numAcross - 1; j >= 0; j--) {
             // call the isClicked function from piece
             if (pieceTable[i][j]->isClicked(p)) {
                 *selectedPiece = pieceTable[i][j];
