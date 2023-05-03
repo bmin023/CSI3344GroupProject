@@ -22,7 +22,9 @@ int main(int argc, char **argv) {
     };
     gameState state = TITLE;
 
-    string colorPNG = "./picturetxts/baylor.jpg.txt";
+    string colorPNG = "./picturetxts/colors.jpg.txt";
+    string carPNG = "./picturetxts/car.jpg.txt";
+    string finePNG = "./picturetxts/fine.jpeg.txt";
     Piece *selectedPiece = nullptr;
     SDL_Plotter window(1000, 1000, true);
     Drawer drawer = Drawer(window);
@@ -40,26 +42,41 @@ int main(int argc, char **argv) {
                     5, false);
             t.Write("Djisktras Disciples", window, Vec2(100, 220),
                     color(0, 0, 0), 3, false);
-            t.Write("Click to begin", window, Vec2(100, 300), color(255, 0, 0),
+            t.Write("Select your puzzle", window, Vec2(100, 300), color(255, 0, 0),
                     7, false);
-            if (window.mouseClick()) {
-                state = PLAY; // if space is hit, game is in PLAY state
-                t.Write("EPIC PUZZLE GAME", window, Vec2(100, 160),
-                        color(255, 255, 255), 5, false);
-                t.Write("Djisktras Disciples", window, Vec2(100, 220),
-                        color(255, 255, 255), 3, false);
-                t.Write("Click to begin", window, Vec2(100, 300),
-                        color(255, 255, 255), 7, false);
+            t.Write("1 - colors", window, Vec2(100, 360), color(0, 0, 0), 3, false);
+            t.Write("2 - car", window, Vec2(100, 380),
+                    color(0, 0, 0), 3, false);
+            t.Write("3 - everything is fine", window, Vec2(100, 400),
+                    color(0, 0, 0), 3, false);
+
+            if(window.kbhit()){
+                char choice = window.getKey();
+                switch (choice){
+                    case '1':
+                        state = PLAY;
+                        window.clear();
+                        puzzle = Puzzle(colorPNG);
+                        break;
+                    case '2':
+                        state = PLAY;
+                        window.clear();
+                        puzzle = Puzzle(carPNG);
+                        break;
+                    case '3':
+                        state = PLAY;
+                        window.clear();
+                        puzzle = Puzzle(finePNG);
+                        break;
+                }
             }
             window.update();
         }
-        puzzle = Puzzle(colorPNG);
         if (window.mouseClick()) {
             window.getMouseClick();
         }
         while (state != TITLE && !window.getQuit()) {
             if (selectedPiece != nullptr) {
-                // cout << selectedPiece->thing << endl;
                 point p;
                 window.getMouseLocation(p.x, p.y);
                 p.x -= offset.x;
@@ -67,7 +84,6 @@ int main(int argc, char **argv) {
                 movePiece(*selectedPiece, p, drawer);
             }
             if (window.mouseClick()) {
-                // cout << "mouse click" << endl;
                 point click = window.getMouseClick();
                 if (selectedPiece != nullptr) {
                     if (testSnappable(*selectedPiece, drawer)) {
@@ -82,10 +98,8 @@ int main(int argc, char **argv) {
                     }
                     selectedPiece = nullptr;
                 } else if (puzzle.mouseClick(click, &selectedPiece)) {
-                    // cout << "piece clicked on" << endl;
                     offset.x = click.x - selectedPiece->getPos().x;
                     offset.y = click.y - selectedPiece->getPos().y;
-                    // verifying cout statement for mouse click
                 } // check for mouse click on puzzle
                 while (window.mouseClick()) {
                     window.getMouseClick();
@@ -96,15 +110,16 @@ int main(int argc, char **argv) {
             if (state == WIN) {
                 t.Write("You won", window, Vec2(100, 160), color(0, 0, 0), 10,
                         false);
-                t.Write("press any key to play again", window, Vec2(100, 300),
+                t.Write("press space to", window, Vec2(100, 300),
                         color(255, 0, 0), 7, false);
-                if (window.kbhit()) {
-                    state = TITLE; // if space is hit, game is in PLAY state
-                    window.clear();
-                    // t.Write("You won", window, Vec2(100, 160), color(255,
-                    // 255, 255), 10, false); t.Write("press any key to play
-                    // again", window, Vec2(100, 300), color(255, 255, 255),7,
-                    // false);
+                t.Write("play again", window, Vec2(100, 340),
+                        color(255, 0, 0), 7, false);
+
+                if(window.kbhit()) {
+                    if(window.getKey() == ' '){
+                        state = TITLE;
+                        window.clear();
+                    }
                 }
             }
 

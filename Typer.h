@@ -55,6 +55,28 @@ private:
   */
   void ImportLetters();
   /*
+  * description: Loads the numbers into the matrix
+  * return: void
+  * precondition: The user wants to load the numbers
+  * postcondition: The numbers are loaded into the matrix
+  */
+  void ImportNumbers();
+  /*
+  * description: Loads the symbols into the matrix
+  * return: void
+  * precondition: The user wants to load the symbols
+  * postcondition: The symbols are loaded into the matrix
+  */
+  void ImportSymbols();
+  /*
+  * description: Checks if a character exists in the matrix
+  * return: bool
+  * precondition: loc exists
+  * postcondition: Returns true if the character exists. 
+  *  loc is set to the location of the character
+  */
+  bool TryLetter(char c, int& loc);
+  /*
   * description: Draws a box to the screen
   * return: void
   * precondition: g is a valid SDL_Plotter
