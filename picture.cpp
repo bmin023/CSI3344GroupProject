@@ -49,7 +49,26 @@ Picture::Picture(string filename) {
     }
 }
 
-Picture::Picture(const Picture &other){
+Picture &Picture::operator=(Picture &&other) {
+    cout << "picture moved" << endl;
+    if (this != &other) {
+        if (owner && picData != nullptr) {
+            for (int i = 0; i < height; i++) {
+                delete[] picData[i];
+            }
+            delete[] picData;
+        }
+        width = other.width;
+        other.width = 0;
+        height = other.height;
+        other.height = 0;
+        owner = other.owner;
+        picData = other.picData;
+        other.picData = nullptr;
+    }
+    return *this;
+}
+Picture::Picture(const Picture &other) {
     this->width = other.width;
     this->height = other.height;
     this->picData = new color *[this->height];
@@ -62,8 +81,8 @@ Picture::Picture(const Picture &other){
     }
 }
 
-Picture& Picture::operator=(const Picture& other){
-    if(this != &other){
+Picture &Picture::operator=(const Picture &other) {
+    if (this != &other) {
         this->width = other.width;
         this->height = other.height;
         this->picData = new color *[this->height];
@@ -81,10 +100,10 @@ Picture& Picture::operator=(const Picture& other){
     return *this;
 }
 
-Picture::~Picture() { 
-    if(owner){
+Picture::~Picture() {
+    if (owner) {
         cout << this->dim() << " delete?" << endl;
-        for(int i = 0; i < height; i++){
+        for (int i = 0; i < height; i++) {
             delete[] picData[i];
         }
         delete[] picData;
@@ -93,8 +112,8 @@ Picture::~Picture() {
 
 color Picture::getPixel(int x, int y) { return picData[x][y]; }
 
-int Picture::getWidth(){return this->width;}
-int Picture::getHeight(){return this->height;}
+int Picture::getWidth() { return this->width; }
+int Picture::getHeight() { return this->height; }
 
 Vec2 Picture::dim() { return Vec2(width, height); }
 
@@ -120,20 +139,20 @@ void Drawer::drawPicture(Picture &pic, Vec2 pos, Orientation orient) {
 }
 
 void Drawer::drawPart(Picture &pic, Vec2 start, Vec2 dim, Vec2 pos,
-              Orientation orient) {
-    switch(orient) {
-        case NORMAL:
-            topOrientationDraw(pic, start, dim, pos, orient);
-            break;
-        case RIGHT:
-            rightOrientationDraw(pic, start, dim, pos, orient);
-            break;
-        case FLIPPED:
-            flippedOrientationDraw(pic, start, dim, pos, orient);
-            break;
-        case LEFT:
-            leftOrientationDraw(pic, start, dim, pos, orient);
-            break;
+                      Orientation orient) {
+    switch (orient) {
+    case NORMAL:
+        topOrientationDraw(pic, start, dim, pos, orient);
+        break;
+    case RIGHT:
+        rightOrientationDraw(pic, start, dim, pos, orient);
+        break;
+    case FLIPPED:
+        flippedOrientationDraw(pic, start, dim, pos, orient);
+        break;
+    case LEFT:
+        leftOrientationDraw(pic, start, dim, pos, orient);
+        break;
     }
 }
 void Drawer::drawMask(Picture &pic, Picture &mask, Vec2 maskStart, Vec2 pos,
@@ -162,7 +181,7 @@ void Drawer::topOrientationDraw(Picture &pic, Vec2 start, Vec2 dim, Vec2 pos,
     iVec2 iDim = dim.toIVec2();
     for (int i = 0; i < iDim.y; i++) {
         for (int j = 0; j < iDim.x; j++) {
-            color pixel = pic.getPixel(iStart.y + i,iStart.x + j);
+            color pixel = pic.getPixel(iStart.y + i, iStart.x + j);
             drawPixel(pos.x + j, pos.y + i, pixel);
         }
     }
@@ -174,7 +193,7 @@ void Drawer::rightOrientationDraw(Picture &pic, Vec2 start, Vec2 dim, Vec2 pos,
     pos += pic.dim().flip();
     for (int i = 0; i < dim.y; i++) {
         for (int j = 0; j < dim.x; j++) {
-            color pixel = pic.getPixel(iStart.x + i,iStart.y + j);
+            color pixel = pic.getPixel(iStart.x + i, iStart.y + j);
             drawPixel(pos.x - i, pos.y - j, pixel);
         }
     }
@@ -186,7 +205,7 @@ void Drawer::flippedOrientationDraw(Picture &pic, Vec2 start, Vec2 dim,
     pos += pic.dim();
     for (int i = 0; i < dim.y; i++) {
         for (int j = 0; j < dim.x; j++) {
-            color pixel = pic.getPixel(iStart.x + i,iStart.y + j);
+            color pixel = pic.getPixel(iStart.x + i, iStart.y + j);
             drawPixel(pos.x - j, pos.y - i, pixel);
         }
     }
@@ -196,7 +215,7 @@ void Drawer::leftOrientationDraw(Picture &pic, Vec2 start, Vec2 dim, Vec2 pos,
     iVec2 iStart = start.toIVec2();
     for (int i = 0; i < dim.y; i++) {
         for (int j = 0; j < dim.x; j++) {
-            color pixel = pic.getPixel(iStart.x + i,iStart.y + j);
+            color pixel = pic.getPixel(iStart.x + i, iStart.y + j);
             drawPixel(pos.x + i, pos.y + j, pixel);
         }
     }
@@ -206,7 +225,7 @@ void Drawer::topOrientationMask(Picture &pic, Picture &mask, Vec2 maskStart,
     iVec2 start = maskStart.toIVec2();
     for (int i = 0; i < mask.height; i++) {
         for (int j = 0; j < mask.width; j++) {
-            color pixel = pic.getPixel(i + start.y,j + start.x);
+            color pixel = pic.getPixel(i + start.y, j + start.x);
             color maskPixel = mask.getPixel(i, j);
             if (maskPixel.R != 0 && maskPixel.G != 0 && maskPixel.B != 0) {
                 drawPixel(pos.x + j, pos.y + i, pixel);
@@ -221,9 +240,10 @@ void Drawer::rightOrientationMask(Picture &pic, Picture &mask, Vec2 maskStart,
     pos.x += mask.height;
     for (int i = 0; i < mask.height; i++) {
         for (int j = 0; j < mask.width; j++) {
-            color pixel = pic.getPixel(start.y + j,start.x - i);
+            color pixel = pic.getPixel(start.y + j, start.x - i);
             color maskPixel = mask.getPixel(i, j);
-            if (maskPixel.R == 255 && maskPixel.G == 255 && maskPixel.B == 255) {
+            if (maskPixel.R == 255 && maskPixel.G == 255 &&
+                maskPixel.B == 255) {
                 drawPixel(pos.x - i, pos.y + j, pixel);
             }
         }
@@ -235,9 +255,10 @@ void Drawer::flippedOrientationMask(Picture &pic, Picture &mask, Vec2 maskStart,
     pos += mask.dim();
     for (int i = 0; i < mask.height; i++) {
         for (int j = 0; j < mask.width; j++) {
-            color pixel = pic.getPixel(start.y - i,start.x - j);
+            color pixel = pic.getPixel(start.y - i, start.x - j);
             color maskPixel = mask.getPixel(i, j);
-            if (maskPixel.R == 255 && maskPixel.G == 255 && maskPixel.B == 255) {
+            if (maskPixel.R == 255 && maskPixel.G == 255 &&
+                maskPixel.B == 255) {
                 drawPixel(pos.x - j, pos.y - i, pixel);
             }
         }
@@ -250,9 +271,10 @@ void Drawer::leftOrientationMask(Picture &pic, Picture &mask, Vec2 maskStart,
     pos.y += mask.width;
     for (int i = 0; i < mask.height; i++) {
         for (int j = 0; j < mask.width; j++) {
-            color pixel = pic.getPixel(start.y - j,i + start.x);
+            color pixel = pic.getPixel(start.y - j, i + start.x);
             color maskPixel = mask.getPixel(i, j);
-            if (maskPixel.R == 255 && maskPixel.G == 255 && maskPixel.B == 255) {
+            if (maskPixel.R == 255 && maskPixel.G == 255 &&
+                maskPixel.B == 255) {
                 drawPixel(pos.x + i, pos.y - j, pixel);
             }
         }
