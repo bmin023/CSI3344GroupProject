@@ -1,13 +1,14 @@
 /* Author: Brendon Kofink
- *         Johann Rajadurai
+ *         Wesley Goyette
  *         Aaron Sierra
  *         David Day
  *         Lucy Ray
- * Assignment Title: Ball Game
- * Assignment Description: user can launch balls to hit objects.
- * Due Date: 12/08/2021
- * Date Created: 11/30/2021
- * Date Last Modified: 12/03/2021
+ * Assignment Title: Epicer Puzzle
+ * Assignment Description: A Puzzle game where the user can
+ *   solve a puzzle by moving and snapping pieces into place.
+ * Due Date: 5/4/2023
+ * Date Created: 4/20/2023
+ * Date Last Modified: 4/20/2023
  */
 
 #include "Typer.h"

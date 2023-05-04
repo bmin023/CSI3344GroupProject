@@ -1,3 +1,15 @@
+/* Author: Brendon Kofink
+ *         Wesley Goyette
+ *         Aaron Sierra
+ *         David Day
+ *         Lucy Ray
+ * Assignment Title: Epicer Puzzle
+ * Assignment Description: A Puzzle game where the user can
+ *   solve a puzzle by moving and snapping pieces into place.
+ * Due Date: 5/4/2023
+ * Date Created: 4/20/2023
+ * Date Last Modified: 4/20/2023
+ */
 #include "SDL_Plotter.h"
 #include "Typer.h"
 #include "picture.h"
