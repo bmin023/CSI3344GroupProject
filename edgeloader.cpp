@@ -42,7 +42,7 @@ EdgeLoader& EdgeLoader::operator=(const EdgeLoader& other) {
     return *this;
 }
 
-EdgeLoader EdgeLoader::&operator=(EdgeLoader &&other) {
+EdgeLoader& EdgeLoader::operator=(EdgeLoader &&other) {
     if (this != &other) {
         if (this->edges != nullptr) {
             for (int i = 0; i < numEdges; i++) {
