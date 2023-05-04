@@ -4,25 +4,6 @@
 EdgeLoader::EdgeLoader() {
     // set random seed
     srand(time(NULL));
-    // // traverse through the directory and load all the edges
-    // // picturTXTs/egdes is the directory
-    // DIR *dir;
-    // dir = opendir("./pictureTXTs/edges");
-    //
-    // edges = new Picture *[numEdges];
-    //
-    // dirent *d;
-    // this->numEdges = 0;
-    // while ((d = readdir(dir)) != NULL) {
-    //     if (d->d_name[0] != '.') {
-    //         numEdges++;
-    //         cout << "Loading edge " << numEdges << ": " << d->d_name << endl;
-    //         edges[numEdges - 1] =
-    //             new Picture("./pictureTXTs/edges/" + string(d->d_name));
-    //     }
-    // }
-    // closedir(dir);
-    // cout << "Loaded " << numEdges << " edges." << endl;
     numEdges = 9;
     edges = new Picture*[numEdges];
     edges[0] = new Picture("./pictureTXTs/edges/sidebump.png.txt");
@@ -34,7 +15,6 @@ EdgeLoader::EdgeLoader() {
     edges[6] = new Picture("./pictureTXTs/edges/mushrooms.png.txt");
     edges[7] = new Picture("./pictureTXTs/edges/teeth.png.txt");
     edges[8] = new Picture("./pictureTXTs/edges/horns.png.txt");
-    // edges[9] = new Picture("./pictureTXTs/edges/Claudia.png.txt");
 }
 
 EdgeLoader::EdgeLoader(const EdgeLoader& other) {
@@ -58,6 +38,22 @@ EdgeLoader& EdgeLoader::operator=(const EdgeLoader& other) {
         for(int i = 0; i < numEdges; i++) {
             edges[i] = new Picture(*other.edges[i]);
         }
+    }
+    return *this;
+}
+
+EdgeLoader EdgeLoader::&operator=(EdgeLoader &&other) {
+    if (this != &other) {
+        if (this->edges != nullptr) {
+            for (int i = 0; i < numEdges; i++) {
+                delete edges[i];
+            }
+            delete[] edges;
+        }
+        edges = other.edges;
+        other.edges = nullptr;
+        numEdges = other.numEdges;
+        other.numEdges = 0;
     }
     return *this;
 }

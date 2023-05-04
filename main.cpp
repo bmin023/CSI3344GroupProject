@@ -11,7 +11,57 @@
 
 using namespace std;
 
+// Data Abstraction:
+// 		A puzzle game is initialized to have TITLE state
+//      Strings with the Picture file paths are initialized
+// 		A SDL Plotter object is initialized, and its associated Drawer object is 
+//          initialized with the window
+//      A Puzzle object is declared
+//      Point offset is declared
+//      A Typer object is declared, to write text to the screen
+//
+// Input: 
+// 		The program responds to SDL Plotter events such as keyboard hits and 
+//      mouse clicks
+// Process:
+// 		While the game state is TITLE, a menu is displayed
+//          When the user selects '1', '2', or '3', the associated puzzle is 
+//          initialized and the screen is cleared.
+//          The game is now in PLAY state
+// 		The player can pick up puzzle pieces by clicking on them, and place them 
+//      by clicking again. 
+//      If a piece is placed close enough to its correct neighbor, it "snaps" 
+//      together, and the pieces move as one
+//      If the selected piece is connected to all other puzzle pieces, the user 
+//      has won. The game state is now WIN
+//      The user can play again by hitting the space key, which will change the 
+//      game state to TITLE
+// Output: 
+// 		The puzzle game is displayed for the user to play and interact with
+// Assumptions: 
+// 		It is assumed that the user only wants to play one puzzle at a time
+// 		It is assumed that all pictures and edges have been processed by the 
+//      "convert.py" script and are in 
+//      "pictureTXTs" directory
+//
+
+/*
+* description: move Piece    
+* return: void                                           
+* precondition: There is a valid puzzle piece, the point parameter is a point
+*               on screen. Drawer has been initialized                             
+* postcondition: The puzzle piece has been moved and drawn to the appropriate
+*                location in the window                                                                        
+*/
 void movePiece(Piece &piece, point p, Drawer &drawer);
+
+/*
+* description: test if a piece can be snapped with a neighbor piece 
+* return: boolean true if it can be connected to its neighbor, false if not                                           
+* precondition: Puzzle pieces are valid                             
+* postcondition: a boolean is returned, true if a piece can snap with it's
+*               neighbor in proximity, false if not                                                                          
+*/
 bool testSnappable(Piece &piece, Drawer &drawer);
 
 int main(int argc, char **argv) {
@@ -29,7 +79,6 @@ int main(int argc, char **argv) {
     SDL_Plotter window(1000, 1000, true);
     Drawer drawer = Drawer(window);
     Puzzle puzzle = Puzzle(colorPNG);
-    cout << "onto the next thing." << endl;
     point offset;
     Typer t;
 
@@ -42,9 +91,10 @@ int main(int argc, char **argv) {
                     5, false);
             t.Write("Djisktras Disciples", window, Vec2(100, 220),
                     color(0, 0, 0), 3, false);
-            t.Write("Select your puzzle", window, Vec2(100, 300), color(255, 0, 0),
-                    7, false);
-            t.Write("1 - colors", window, Vec2(100, 360), color(0, 0, 0), 3, false);
+            t.Write("Select your puzzle", window, Vec2(100, 300), 
+                    color(255, 0, 0),7, false);
+            t.Write("1 - colors", window, Vec2(100, 360), 
+                    color(0, 0, 0), 3, false);
             t.Write("2 - car", window, Vec2(100, 380),
                     color(0, 0, 0), 3, false);
             t.Write("3 - everything is fine", window, Vec2(100, 400),
@@ -129,43 +179,26 @@ int main(int argc, char **argv) {
     return 0;
 }
 
+
 bool testSnappable(Piece &piece, Drawer &drawer) {
     int pieceNum = piece.getConnected();
-    // cout << " -- test -- " << endl;
-    // cout << "NORMAL";
     if (piece.isSnappable(NORMAL)) {
-        // cout << " was GOOD" << endl;
         movePiece(piece, piece.snap(NORMAL).toPoint(), drawer);
         piece.connect(NORMAL);
-    } else {
-        // cout << " was BAD" << endl;
-    }
-    // cout << "RIGHT";
+    } 
     if (piece.isSnappable(RIGHT)) {
-        // cout << " was GOOD" << endl;
         movePiece(piece, piece.snap(RIGHT).toPoint(), drawer);
         piece.connect(RIGHT);
-    } else {
-        // cout << " was BAD" << endl;
-    }
-    // cout << "FLIPPED";
+    } 
     if (piece.isSnappable(FLIPPED)) {
-        // cout << " was GOOD" << endl;
         movePiece(piece, piece.snap(FLIPPED).toPoint(), drawer);
         piece.connect(FLIPPED);
-    } else {
-        // cout << " was BAD" << endl;
     }
-    // cout << "LEFT";
     if (piece.isSnappable(LEFT)) {
-        // cout << " was GOOD" << endl;
         movePiece(piece, piece.snap(LEFT).toPoint(), drawer);
         piece.connect(LEFT);
-    } else {
-        // cout << " was BAD" << endl;
-    }
-    // cout << " -- end test -- " << endl << endl;
-    cout << piece.getConnected() << endl;
+    } 
+    
     return piece.getConnected() > pieceNum;
 }
 

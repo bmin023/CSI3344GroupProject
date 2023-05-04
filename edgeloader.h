@@ -3,37 +3,64 @@
 
 #include "picture.h"
 
+
 class EdgeLoader {
     private:
         Picture **edges = nullptr;
     
     public:
         int numEdges;
+        /*
+        * description: default constructor for EdgeLoader    
+        * return: none                                           
+        * precondition: none                             
+        * postcondition: 9 edges are loaded in for puzzle pieces to have                  
+        *                                                        
+        */
         EdgeLoader();
+
+        /*
+        * description: copy constructor for EdgeLoader    
+        * return: none                                           
+        * precondition: a valid EdgeLoader other object exists                             
+        * postcondition: 9 edges are loaded in from existing EdgeLoader
+        *               for puzzle pieces to have                                                                        
+        */
         EdgeLoader(const EdgeLoader &other);
+
+        /*
+        * description: assignment operator overload for EdgeLoader    
+        * return: EdgeLoader object reference                                        
+        * precondition: a valid EdgeLoader other object exists                             
+        * postcondition: 9 edges are loaded in for puzzle pieces to have 
+        *                from existing EdgeLoader                                                                         
+        */
         EdgeLoader &operator=(const EdgeLoader &other);
-        EdgeLoader &operator=(EdgeLoader &&other) {
-            if (this != &other) {
-                if (this->edges != nullptr) {
-                    for (int i = 0; i < numEdges; i++) {
-                        delete edges[i];
-                    }
-                    delete[] edges;
-                }
-                edges = other.edges;
-                other.edges = nullptr;
-                numEdges = other.numEdges;
-                other.numEdges = 0;
-            }
-            return *this;
-        }
+
+        /*
+        * description: assignment operator overload for EdgeLoader    
+        * return: EdgeLoader object reference                                        
+        * precondition: none                             
+        * postcondition: 9 edges are loaded in for puzzle pieces to have 
+        *                from existing EdgeLoader                                                                         
+        */
+        EdgeLoader &operator=(EdgeLoader &&other);
+
+        /*
+        * description: destructor for EdgeLoader    
+        * return: none                                           
+        * precondition: none                             
+        * postcondition: memory associated with EdgeLoader is freed                                                                         
+        */
         ~EdgeLoader();
-        void report() {
-            for(int i = 0; i < numEdges; i++) {
-                cout << "Edge " << i << ": ";
-                edges[i]->report();
-            }
-        }
+
+        /*
+        * description: get random edge for a puzzle piece    
+        * return: Picture pointer                                           
+        * precondition: EdgeLoader object exists                             
+        * postcondition: a random edge is returned, and isFlipped (original edge or inverse)
+        *               is randomly assigned T/F                                                                         
+        */
         Picture *getRandomEdge(bool &isFlipped);
 };
 
