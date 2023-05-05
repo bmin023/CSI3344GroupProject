@@ -13,6 +13,7 @@
 #include "piece.h"
 #include "picture.h"
 
+
 // Intentional Shallow Copy.
 Edge::Edge(Picture &pic, bool inverted) : Picture() {
     this->inverted = inverted;
@@ -22,15 +23,19 @@ Edge::Edge(Picture &pic, bool inverted) : Picture() {
     this->owner = false;
 }
 
+Edge::Edge() : Picture() {
+    width = 128;
+    height = 32;
+    picData = nullptr;
+    inverted = false;
+}
+
 Edge::~Edge() { owner = false; }
 
 color Edge::getPixel(int x, int y) {
     color col;
     if (picData == nullptr) {
         int abs = (x - height / 2);
-        // if (abs < 0) {
-        //     abs = -abs;
-        // }
         if (y < abs + height / 2) {
             return color(255, 0, 0);
         }
@@ -91,17 +96,24 @@ Edge& Edge::operator=(const Edge &other) {
     return *this;
 }
 
-Edge::Edge() : Picture() {
-    width = 128;
-    height = 32;
-    picData = nullptr;
-    inverted = false;
-}
-
 Piece::Piece(Picture *image, Vec2 imagePos, Vec2 pos)
     : image(image), imagePos(imagePos), pos(pos), topEdge(), bottomEdge(),
       lEdge(), rEdge() {
     orientation = NORMAL;
+}
+
+Piece::Piece(const Piece &other) : pos(other.pos), imagePos(other.imagePos), 
+        image(other.image) {
+    moved = other.moved;
+    for(int i = 0; i< 4; i++) {
+        neighborArr[i] = other.neighborArr[i];
+        connected[i] = other.connected[i];
+    }
+    orientation = other.orientation;
+    topEdge = other.topEdge;
+    bottomEdge = other.bottomEdge;
+    lEdge = other.lEdge;
+    rEdge = other.rEdge;
 }
 
 void Piece::draw(Drawer &drawer) { draw(drawer, *image); }
