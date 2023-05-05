@@ -134,8 +134,7 @@ Puzzle& Puzzle::operator=(Puzzle &&other) {
         numDown = other.numDown;
         other.numDown = 0;
         edgeLoader = std::move(other.edgeLoader);
-        picture.report();
-        edgeLoader.report();
+        
         for(int i = 0; i < numDown; i++) {
             for(int j = 0; j < numAcross; j++) {
                 pieceTable[i][j]->image = &picture;

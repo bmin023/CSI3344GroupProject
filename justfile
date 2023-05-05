@@ -1,6 +1,6 @@
 brew_dir := env_var_or_default("HOMEBREW_PREFIX","Whats homebrew?")
 set windows-shell := ["powershell.exe", "-NoLogo", "-Command"]
-files := "main.cpp picture.cpp piece.cpp puzzle.cpp edgeloader.cpp superpiece.cpp Typer.cpp"
+files := "main.cpp picture.cpp piece.cpp puzzle.cpp edgeloader.cpp Typer.cpp vec2.cpp"
 
 default: run
 [macos]
