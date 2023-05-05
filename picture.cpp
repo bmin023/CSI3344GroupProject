@@ -50,7 +50,6 @@ Picture::Picture(string filename) {
 }
 
 Picture &Picture::operator=(Picture &&other) {
-    cout << "picture moved" << endl;
     if (this != &other) {
         if (owner && picData != nullptr) {
             for (int i = 0; i < height; i++) {
@@ -102,7 +101,6 @@ Picture &Picture::operator=(const Picture &other) {
 
 Picture::~Picture() {
     if (owner) {
-        cout << this->dim() << " delete?" << endl;
         for (int i = 0; i < height; i++) {
             delete[] picData[i];
         }

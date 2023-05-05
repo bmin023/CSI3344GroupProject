@@ -16,12 +16,8 @@
 
 Puzzle::Puzzle(string filename, int maxHeight, int maxWidth) {
     this->picture = Picture(filename);
-    cout << "picture width: " << picture.getWidth() << endl;
-    cout << "picture height: " << picture.getHeight() << endl;
     this->numAcross = picture.getWidth() / 96;
     this->numDown = picture.getHeight() / 96;
-    cout << "numAcross: " << numAcross << endl;
-    cout << "numDown: " << numDown << endl;
 
     this->pieceTable = new Piece **[numDown];
     for (int i = 0; i < numDown; i++) {
@@ -215,8 +211,6 @@ bool Puzzle::mouseClick(point p, Piece **selectedPiece) {
             // call the isClicked function from piece
             if (pieceTable[i][j]->isClicked(p)) {
                 *selectedPiece = pieceTable[i][j];
-                cout << "piece at " << i << ", " << j << " was clicked on"
-                     << endl;
                 pieceClickedOn = true;
                 return pieceClickedOn;
             }

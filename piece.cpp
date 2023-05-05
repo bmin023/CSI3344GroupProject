@@ -167,9 +167,7 @@ bool Piece::isSnappable(Orientation orient) {
     }
     Vec2 neighborPos = neighborArr[orient]->getPos();
     float sqmag = (neighborPos - pos).sqMagnitude();
-    // cout << "sqmag " << (neighborPos - pos).sqMagnitude() << endl;
     if (sqmag < 12000 && sqmag > 8000) {
-        // cout << "dot " << (neighborPos - pos).normalized().dot(orientations[orient]) << endl;
         if ((neighborPos - pos).normalized().dot(orientations[orient]) > 0.3) {
             return true;
         }
